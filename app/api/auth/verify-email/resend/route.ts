@@ -60,7 +60,7 @@ export const POST = async (req: NextRequest) => {
         }
 
         const { error } = await resend.emails.send({
-            from: 'Radius Buy <onboarding@resend.dev>',
+            from: 'Proximely <onboarding@resend.dev>',
             to: email,
             subject: 'Verify your email to get started',
             react: VerifyEmailTemplate({

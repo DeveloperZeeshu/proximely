@@ -1,5 +1,4 @@
 import { fromLeftVariants } from '@/src/animations/fromLeftVariants'
-import Button from '@/src/components/ui/button'
 import { ShopLocation } from '@/src/types/shop.types'
 import { MapPin, Phone } from 'lucide-react'
 import { motion } from 'motion/react'
