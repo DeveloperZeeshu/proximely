@@ -1,7 +1,7 @@
 'use client'
 
-import { useAppContext } from '@/src/context/AppContext'
-import { useAuth } from '@/src/store/auth/useAuth'
+import { useAppContext } from '@/context/AppContext'
+import { useAuth } from '@/store/auth/useAuth'
 import { Menu } from 'lucide-react'
 import Link from 'next/link.js'
 import { usePathname } from 'next/navigation'

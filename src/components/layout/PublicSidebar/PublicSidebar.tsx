@@ -3,9 +3,9 @@
 import { type ElementType } from 'react';
 import { House, Link as LinkIcon, PanelRightOpen, Store } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { useAppContext } from '@/src/context/AppContext';
+import { useAppContext } from '@/context/AppContext';
 import Link from 'next/link';
-import { useAuth } from '@/src/store/auth/useAuth';
+import { useAuth } from '@/store/auth/useAuth';
 
 interface NavItem {
     name: string
