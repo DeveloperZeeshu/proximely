@@ -1,8 +1,7 @@
 'use client'
 
-import Select from "@/src/components/ui/select"
 import Input from "@/src/components/ui/Input"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { handleAxiosError } from "@/src/apis/utils/handleAxiosError"
 import { CreateShopInput, createShopSchema } from "../../schemas/create.schema"
@@ -13,11 +12,13 @@ import { editShop } from "@/src/store/shop/shopSlice"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { setShopStatus } from "@/src/store/auth/authSlice"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/src/components/ui/select"
 
 export function OnboardingCard() {
     const {
         handleSubmit,
-        register
+        register,
+        control
     } = useForm<CreateShopInput>({
         resolver: zodResolver(createShopSchema)
     })
@@ -66,11 +67,30 @@ export function OnboardingCard() {
                     {...register('phone')}
                 />
 
-                <Select
-                    label="Category"
-                    options={['General Store']}
-                    {...register('category')}
-                />
+                <div 
+        className="flex flex-col">
+          <label className="text-sm">Category</label>
+          <Controller
+            name="category"
+            control={control}
+            render={({ field }) => (
+              <Select
+                value={field.value}
+                onValueChange={field.onChange}>
+                <SelectTrigger className="">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent className="z-70">
+                  <SelectGroup>
+                    <SelectLabel>Category</SelectLabel>
+                    <SelectItem value="General Store">General Store</SelectItem>
+                    <SelectItem value="Pharmacy">Pharmacy</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </div>
 
                 <Button
                     type="submit"
