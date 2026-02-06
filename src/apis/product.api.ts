@@ -1,5 +1,6 @@
 import { ProductFormInput } from "../features/products/schemas/product.schema"
 import { UpdateProductInput } from "../features/products/schemas/update.schema"
+import { LatLng } from "../types/search.types"
 import apiClient from "./utils/apiClient"
 
 // Fetch all products
@@ -41,26 +42,5 @@ export const updateProduct = async ({
 }
 
 
-// Search Product api
-type QueryPayloadType = {
-    name: string
-    category?: string
-    radius: number
-}
 
-type CoordsPayloadType = {
-    latitude: number
-    longitude: number
-}
-
-export const searchProduct = async ({
-    query,
-    coordinates
-}: {
-    query: QueryPayloadType
-    coordinates: CoordsPayloadType
-}) => {
-    const res = await apiClient.post('/products/search', { query, coordinates })
-    return res.data
-}
 

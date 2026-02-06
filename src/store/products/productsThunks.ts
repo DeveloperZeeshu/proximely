@@ -5,7 +5,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 type FetchProductsArgs = {
     cursor?: string | null
     limit: number
-    dir: string
+    dir: 'next' | 'prev'
 }
 
 export type FetchProductsResponse = {

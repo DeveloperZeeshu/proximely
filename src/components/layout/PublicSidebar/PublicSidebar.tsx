@@ -44,13 +44,13 @@ export default function PublicSidebar() {
 
     return (
         <>
-            <aside className={`border-r border-slate-100 p-4 flex flex-col justify-start bg-white/80  gap-9 z-60 fixed top-0 left-0 h-screen w-74 backdrop-blur-sm transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            <aside className={`border-r border-slate-100 p-4 flex flex-col justify-start bg-white/80  gap-9 z-60 fixed top-0 left-0 h-screen w-74 backdrop-blur-sm transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} rounded-r-lg`}>
 
                 <p className="flex justify-end w-full">
                     <PanelRightOpen
-                        className="cursor-pointer hover:text-gray-700"
+                        className="cursor-pointer text-gray-700 hover:text-gray-600 p-1 rounded-sm hover:bg-gray-200"
                         onClick={closeSidebar}
-                        size={20} />
+                        size={27} />
                 </p>
 
                 {!authLoading && isAuth &&

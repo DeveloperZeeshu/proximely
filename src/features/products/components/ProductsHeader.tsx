@@ -1,4 +1,5 @@
 import { Button } from "@/src/components/ui/button"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/src/components/ui/select"
 import { useAppContext } from "@/src/context/AppContext"
 import { Filter, Search } from "lucide-react"
 
@@ -28,18 +29,20 @@ export const ProductsHeader = () => {
                 </button>
 
                 <div className="relative w-full lg:w-auto">
-                    <select
-                        className=" text-sm h-9.5 pl-3 pr-8 rounded-lg border border-gray-300 bg-white shadow
-               focus:border-blue-400 focus:ring-3 focus:ring-blue-500/20
-               transition-[box-shadow,border-color] outline-none w-full"
-                        defaultValue="newest"
-                    >
-                        <option>Sort</option>
-                        <option value="newest">Newest</option>
-                        <option value="oldest">Oldest</option>
-                        <option value="name_asc">Name (A–Z)</option>
-                        <option value="name_desc">Name (Z–A)</option>
-                    </select>
+                    <Select>
+                        <SelectTrigger className="bg-white border-gray-300 shadow w-full">
+                            <SelectValue placeholder="Sort by" />
+                        </SelectTrigger>
+                        <SelectContent className="z-70">
+                            <SelectGroup>
+                                <SelectLabel>Sort by</SelectLabel>
+                                <SelectItem value="newest">Newest</SelectItem>
+                                <SelectItem value="oldest">Oldest</SelectItem>
+                                <SelectItem value="name_asc">Name (A–Z)</SelectItem>
+                                <SelectItem value="name_desc">Name (Z–A)</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
 

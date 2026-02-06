@@ -1,6 +1,6 @@
 'use client'
 
-import Select from "@/src/components/ui/Select"
+import Select from "@/src/components/ui/select"
 import Input from "@/src/components/ui/Input"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"

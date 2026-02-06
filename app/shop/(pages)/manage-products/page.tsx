@@ -40,14 +40,18 @@ export default function ManageProducts() {
     const page = Number(searchParams.get('page') ?? 1)
     const cursor = searchParams.get('cursor')
     const limit = Number(searchParams.get('limit') ?? 10)
-    const dir = searchParams.get('dir') || 'next'
+    const dirParam = searchParams.get('dir')
+
+    const dir: 'next' | 'prev' =
+        dirParam === 'prev' ? 'prev' : 'next'
+
 
     useEffect(() => {
         if (!authLoading && hasShop) {
             dispatch(fetchAllProducts({
                 cursor,
                 limit,
-                dir
+                dir: dir ?? 'next'
             }))
         }
     }, [cursor, dir, limit, hasShop, dispatch])

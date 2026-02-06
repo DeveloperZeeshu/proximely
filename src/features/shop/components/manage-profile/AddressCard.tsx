@@ -2,10 +2,10 @@
 
 import Input from "@/src/components/ui/Input"
 import { Actions } from "./Actions"
-import Select from "@/src/components/ui/Select"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/src/components/ui/select"
 import { Pencil } from "lucide-react"
 import { useEffect, useState } from "react"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { handleAxiosError } from "@/src/apis/utils/handleAxiosError"
 import { UpdateShopInput, updateShopSchema } from "../../schemas/update.schema"
@@ -34,7 +34,8 @@ export function AddressCard({ shopAddress = {}, shopId }: PropType) {
   const {
     handleSubmit,
     reset,
-    register
+    register,
+    control
   } = useForm<UpdateShopInput>({
     resolver: zodResolver(updateShopSchema),
     defaultValues: {
@@ -117,19 +118,60 @@ export function AddressCard({ shopAddress = {}, shopId }: PropType) {
         />
 
         <div className="flex gap-3 lg:gap-4">
-          <Select
-            label="City"
-            options={['jaipur']}
-            {...register('city')}
-            disabled={!toEdit}
-          />
+          <div className="flex flex-col w-full">
+              <label className="text-sm">City</label>
+              <Controller
+                name="city"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    value={field.value}
+                    disabled={!toEdit}
+                    onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select city" />
+                    </SelectTrigger>
+                    <SelectContent className="z-70">
+                      <SelectGroup>
+                        <SelectLabel>City</SelectLabel>
+                        <SelectItem value="jaipur">Jaipur</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
 
-          <Select
+          <div className="flex flex-col w-full">
+              <label className="text-sm">State</label>
+              <Controller
+                name="state"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    value={field.value}
+                    disabled={!toEdit}
+                    onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select state" />
+                    </SelectTrigger>
+                    <SelectContent className="z-70">
+                      <SelectGroup>
+                        <SelectLabel>State</SelectLabel>
+                        <SelectItem value="jaipur">Rajasthan</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
+
+          {/* <Select
             label="State"
             options={['rajasthan']}
             {...register('state')}
             disabled={!toEdit}
-          />
+          /> */}
 
           <Input
             label="Zip Code"

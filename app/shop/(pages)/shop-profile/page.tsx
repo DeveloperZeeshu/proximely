@@ -6,7 +6,6 @@ import { BasicInfoCard } from "@/src/features/shop/components/manage-profile/Bas
 import { LocationCard } from "@/src/features/shop/components/manage-profile/LocationCard";
 import { ShopAppearance } from "@/src/features/shop/components/manage-profile/ShopAppearance";
 import { ShopPreview } from "@/src/features/shop/components/manage-profile/ShopPreview";
-import { NoShopCard } from "@/src/features/shop/components/NoShopCard";
 import { useAuth } from "@/src/store/auth/useAuth";
 import { useShop } from "@/src/store/shop/useShop";
 import { AccountGate } from "../../AccountGate";

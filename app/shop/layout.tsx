@@ -35,7 +35,7 @@ export default function ShopLayout({
         }
 
         return () => document.body.classList.remove('overflow-hidden')
-    }, [shopSidebarOpen, isProductFormOpen])
+    }, [shopSidebarOpen,isProductFormOpen])
 
     useEffect(() => {
         if (hasShop && !shop) {
@@ -52,7 +52,7 @@ export default function ShopLayout({
     }
 
     return (
-        <>
+        <div className="min-h-screen flex flex-col">
             {/* Product form */}
             {
                 isProductFormOpen &&
@@ -77,11 +77,11 @@ export default function ShopLayout({
             }
 
             <ShopSidebar />
-            <main className={isProductFormOpen ? 'pointer-events-none blur-sm' : ''}>
+            <main className={isProductFormOpen ? 'blur-sm flex-1' : ' flex-1'}>
                 {children}
             </main>
             <ShopFooter />
-        </>
+        </div>
     )
 }
 

@@ -1,11 +1,10 @@
 'use client'
 
-import Select from "@/src/components/ui/Select"
 import { Actions } from "./Actions"
 import Input from "@/src/components/ui/Input"
 import { Pencil } from "lucide-react"
 import { useEffect, useState } from "react"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { handleAxiosError } from "@/src/apis/utils/handleAxiosError"
 import { UpdateShopInput, updateShopSchema } from "../../schemas/update.schema"
@@ -13,6 +12,7 @@ import { updateShop } from "@/src/apis/shop.api"
 import toast from "react-hot-toast"
 import { useAppDispatch } from "@/src/hooks/redux-hooks"
 import { editShop } from "@/src/store/shop/shopSlice"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/src/components/ui/select"
 
 type BasicInfoType = {
   shopName?: string
@@ -34,7 +34,8 @@ export function BasicInfoCard({ basicInfo = {}, shopId }: PropType) {
   const {
     handleSubmit,
     register,
-    reset
+    reset,
+    control
   } = useForm<UpdateShopInput>({
     resolver: zodResolver(updateShopSchema),
     defaultValues: {
@@ -131,12 +132,31 @@ export function BasicInfoCard({ basicInfo = {}, shopId }: PropType) {
           {...register('phone')}
         />
 
-        <Select
-          label="Category"
-          options={['General Store', 'Pharmacy']}
-          disabled={!toEdit}
-          {...register('category')}
-        />
+        <div 
+        className="flex flex-col">
+          <label className="text-sm">Category</label>
+          <Controller
+            name="category"
+            control={control}
+            render={({ field }) => (
+              <Select
+                value={field.value}
+                onValueChange={field.onChange}
+                disabled={!toEdit}>
+                <SelectTrigger className="">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent className="z-70">
+                  <SelectGroup>
+                    <SelectLabel>Category</SelectLabel>
+                    <SelectItem value="General Store">General Store</SelectItem>
+                    <SelectItem value="Pharmacy">Pharmacy</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </div>
       </div>
 
       {toEdit && (

@@ -1,133 +1,211 @@
-
 'use client'
 
-export const dynamic = 'force-dynamic';
-
-import { useCallback, useEffect, useState } from "react"
-import toast from "react-hot-toast"
+import { useCallback, useEffect } from 'react'
+import toast from 'react-hot-toast'
+import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
-import { useRouter, useSearchParams } from "next/navigation"
-import Container from "@/src/components/container/Container"
-import { ProductCard, SearchedProductType } from "@/src/features/search/components/ProductCard"
-import { searchProduct } from "@/src/apis/product.api"
-import Image from "next/image"
-import SearchPageSkeleton from "@/src/features/search/components/SearchPageSkeleton"
-import { Button } from "@/src/components/ui/button"
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
+import Container from '@/src/components/container/Container'
+import { Button } from '@/src/components/ui/button'
+import {
+    Pagination,
+    PaginationEllipsis,
+    PaginationNext,
+    PaginationPageNumber,
+    PaginationPrevious
+} from '@/src/components/ui/pagination'
+
+import { ProductCard } from '@/src/features/search/components/ProductCard'
+import { SearchForm } from '@/src/features/search/components/SearchForm'
+import SearchPageSkeleton from '@/src/features/search/components/SearchPageSkeleton'
+import { FilterBar } from '@/src/features/search/components/FilterBar'
+
+import { useProductDiscovery } from '@/src/store/productDiscovery/useProductDiscovery'
+import { itemsDiscovery } from '@/src/store/productDiscovery/productDiscoveryThunk'
+import { useAppDispatch } from '@/src/hooks/redux-hooks'
 
 export default function SearchPage() {
-    const searchParams = useSearchParams()
     const router = useRouter()
-    const [products, setProducts] = useState<SearchedProductType[]>([])
-    const [loading, setLoading] = useState<boolean>(true)
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+    const dispatch = useAppDispatch()
 
-    const fetchProducts = useCallback(async () => {
-        const name = String(searchParams.get('name'));
-        const radius = Number(searchParams.get('radius') || 10000);
-        const lat = Number(searchParams.get('lat'));
-        const lng = Number(searchParams.get('lng'));
+    const {
+        productDiscoveryLoading,
+        productDiscoveryItems,
+        productDiscoveryPrevCursor,
+        productDiscoveryNextCursor,
+        productDiscoveryHasNext,
+        productDiscoveryHasPrev
+    } = useProductDiscovery()
+
+
+    /* ---------------- Pagination ---------------- */
+
+    const updateCursor = (cursor: string, dir: 'next' | 'prev') => {
+        const params = new URLSearchParams(searchParams.toString())
+        params.set('cursor', cursor)
+        params.set('dir', dir)
+        router.replace(`${pathname}?${params}`)
+    }
+
+    const handlePrevious = () => {
+        if (!productDiscoveryHasPrev || !productDiscoveryPrevCursor) return
+        updateCursor(productDiscoveryPrevCursor, 'prev')
+    }
+
+    const handleNext = () => {
+        if (!productDiscoveryHasNext || !productDiscoveryNextCursor) return
+        updateCursor(productDiscoveryNextCursor, 'next')
+    }
+
+    /* ---------------- Fetch Logic ---------------- */
+
+    const fetchProducts = useCallback(() => {
+        const name = searchParams.get('name') || ''
+        const radius = Number(searchParams.get('radius') || 10000)
+        const sort = searchParams.get('sort') || 'distance'
+        const lat = Number(searchParams.get('lat'))
+        const lng = Number(searchParams.get('lng'))
+        const cursor = searchParams.get('cursor')
+        const dir = (searchParams.get('dir') as 'next' | 'prev') || 'next'
 
         if (!lat || !lng) {
-            toast.error('Location data missing');
-            setLoading(false);
-            return;
+            toast.error('Location data missing')
+            return
         }
 
-        try {
-            const result = await searchProduct({
+        dispatch(
+            itemsDiscovery({
                 query: {
-                    name,
+                    search: name,
                     radius,
+                    location: {
+                        latitude: lat,
+                        longitude: lng
+                    }
                 },
-                coordinates: {
-                    latitude: lat,
-                    longitude: lng
+                sort,
+                cursor: {
+                    value: cursor,
+                    dir
                 }
             })
-            setProducts(result.products)
-        } catch (err) {
-            // console.error(err);
-            toast.error('Error fetching products');
-        } finally {
-            setLoading(false);
-        }
-    }, [searchParams])
+        )
+    }, [searchParams, dispatch])
 
     useEffect(() => {
-        setLoading(true)
-        fetchProducts();
-    }, [fetchProducts]);
+        fetchProducts()
+    }, [fetchProducts])
 
-    if (loading)
+    /* ---------------- States ---------------- */
+
+    if (productDiscoveryLoading) {
         return (
             <Container>
-                <div className='w-full'>
-                    <button
-                        onClick={() => router.push('/')}
-                        className='text-sm mb-2 text-blue-500 hover:text-blue-600 flex gap-.5 items-center cursor-pointer'
-                    ><ArrowLeft size={18} />
-                        Back to Home
-                    </button>
-                </div>
+                <BackButton />
                 <SearchPageSkeleton />
             </Container>
         )
+    }
 
-    if (products.length < 1)
+    if (!productDiscoveryLoading && productDiscoveryItems.length === 0) {
         return (
             <Container>
-                <div
-                    className='flex flex-col items-center min-h-screen'>
+                <div className="flex flex-col items-center justify-center">
+                    <div className="mb-4 max-w-xl mx-auto w-full">
+                        <SearchForm />
+                    </div>
                     <Image
-                        src='/noProductFound.svg'
-                        alt='no product found nearby'
-                        loading="eager"
-                        height={300}
+                        src="/noProductFound.svg"
+                        alt="No products found"
                         width={300}
-                        
+                        height={300}
                     />
-                    <p className='text-xl font-semibold mb-5 text-center'>No Product found nearby.</p>
-                    <Button
-                        type='button'
-                        text='Go Back'
-                        onClick={() => router.push('/')}
-                    />
+                    <p className="text-xl font-semibold mt-4 mb-6 text-center">
+                        No products found nearby
+                    </p>
                 </div>
             </Container>
         )
+    }
+
 
     return (
-        <>
-            <Container>
-                <div className='w-full'>
-                    <button
-                        onClick={() => router.push('/')}
-                        className='text-sm mb-2 text-blue-500 hover:text-blue-600 flex gap-.5 items-center cursor-pointer'
-                    ><ArrowLeft size={18} />
-                        Back to Home
-                    </button>
-                </div>
-                <div className='min-h-screen'>
-                    <div className="text-center mb-6">
-                        <h2 className="text-2xl text-slate-800 font-bold">Find What You Need, Nearby.</h2>
-                        <p className="text-gray-500 text-sm mt-1">Showing products available near your location.</p>
+        <Container>
+            <div className='flex flex-col justify-between min-h-screen'>
+                {/* Back Button */}
+                <div className=''>
+                    <div className="mb-4">
+                        <BackButton />
                     </div>
 
-                    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 place-items-center mt-4">
-                        {
-                            products && products.map((p) => (
-                                <ProductCard
-                                    key={p.product._id}
-                                    productInfo={p.product}
-                                    shopInfo={p.shop}
-                                    distance={p.distanceKm}
-                                />
-                            ))}
-                    </ul>
+                    {/* SEARCH */}
+                    <div className="mb-4 max-w-xl mx-auto w-full">
+                        <SearchForm />
+                    </div>
+
+                    {/* FILTERS */}
+                    <div className="mb-6">
+                        <FilterBar />
+                    </div>
+
+                    {/* RESULTS GRID */}
+                    <section>
+                        {productDiscoveryItems.length > 0 ? (
+                            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                                {productDiscoveryItems.map((p) => (
+                                    <li key={p.product._id} className="flex justify-center">
+                                        <ProductCard
+                                            productInfo={p.product}
+                                            shopInfo={p.shop}
+                                            distance={p.distanceKm}
+                                        />
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="text-center text-gray-500 mt-12">
+                                No products found nearby.
+                            </p>
+                        )}
+                    </section>
                 </div>
-            </Container>
-        </>
+
+                {/* PAGINATION */}
+                <div className="mt-8 flex justify-center items-center gap-2">
+                    <Pagination>
+                        <PaginationPrevious
+                            onClick={handlePrevious}
+                            disabled={!productDiscoveryHasPrev}
+                        />
+                        <PaginationPageNumber page={1} />
+                        {productDiscoveryHasNext && <PaginationEllipsis />}
+                        <PaginationNext
+                            onClick={handleNext}
+                            disabled={!productDiscoveryHasNext}
+                        />
+                    </Pagination>
+                </div>
+            </div>
+        </Container>
     )
 }
 
+/* ---------------- Back Button ---------------- */
 
+function BackButton() {
+    const router = useRouter()
+    return (
+        <div className="w-full">
+            <button
+                onClick={() => router.push('/')}
+                className="text-sm text-blue-500 hover:text-blue-600 flex items-center gap-1"
+            >
+                <ArrowLeft size={18} />
+                Back to Home
+            </button>
+        </div>
+    )
+}

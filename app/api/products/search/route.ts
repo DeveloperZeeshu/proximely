@@ -1,10 +1,10 @@
 import logger from "@/core/logger";
-import { SearchProductErrorType, searchProductService } from "@/src/features/search/service";
-import { searchProductSchema } from "@/src/validations/products/search.schema";
+import { ProductDiscoveryErrorType, productDiscoveryService } from "@/src/features/search/service";
+import { productDiscoverySchema } from "@/src/validations/productDiscovery/search.schema";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
-const SEARCH_PRODUCT_ERROR_MAP: Record<SearchProductErrorType, {
+const PRODUCT_DISCOVERY_ERROR_MAP: Record<ProductDiscoveryErrorType, {
     status: number,
     message: string
 }> = {
@@ -15,7 +15,7 @@ export const POST = async (req: NextRequest) => {
     try {
         const untrustedData = await req.json()
 
-        const parsedData = searchProductSchema.safeParse(untrustedData)
+        const parsedData = productDiscoverySchema.safeParse(untrustedData)
 
         if (!parsedData.success) {
             const error = z.treeifyError(parsedData.error)
@@ -27,12 +27,12 @@ export const POST = async (req: NextRequest) => {
             }, { status: 422 })
         }
 
-        const result = await searchProductService({
+        const result = await productDiscoveryService({
             data: parsedData.data
         })
 
         if (!result.ok) {
-            const err = SEARCH_PRODUCT_ERROR_MAP[result.code]
+            const err = PRODUCT_DISCOVERY_ERROR_MAP[result.code]
 
             if (!err) {
                 logger.error('Unhandled SearchProductErrorCode', { code: result.code })
@@ -51,7 +51,11 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json({
             success: true,
             message: 'Products fetched successfully.',
-            products: result.products
+            products: result.products,
+            cursor: {
+                prev: result.prevCursor,
+                next: result.nextCursor
+            }
         }, { status: 200 })
 
     } catch (err: unknown) {

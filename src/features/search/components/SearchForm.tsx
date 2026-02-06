@@ -12,6 +12,7 @@ export const SearchForm = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const {
         register,
+        watch,
         handleSubmit
     } = useForm({
         resolver: zodResolver(searchProductsSchema)
@@ -29,6 +30,8 @@ export const SearchForm = () => {
                 radius: String(data.radius),
                 lat: String(lat),
                 lng: String(lng),
+                sort: 'distance',
+                dir: 'next'
             })
 
             router.push(`/search-page?${params.toString()}`)
@@ -40,37 +43,62 @@ export const SearchForm = () => {
     }
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col lg:flex-row gap-3 lg:gap-4 w-full items-center">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+            <div
+                className="
+      flex items-center
+      bg-white
+      border border-slate-200
+      rounded-full
+      h-12
+      pl-4 pr-0.5
+      shadow-sm
+      focus-within:ring-2 focus-within:ring-blue-500/20
+      focus-within:border-blue-500
+      transition
+    "
+            >
+                {/* Icon */}
+                <Search className="h-5 w-5 text-slate-400 shrink-0" />
 
-            <div className="relative w-full">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                {/* Input */}
                 <input
                     type="text"
                     placeholder="Search milk, soap, rice..."
-                    className="w-full h-10 pl-11 rounded-lg bg-white border border-gray-300 focus:ring-3 focus:ring-blue-500/20
-              focus:border-blue-500 transition outline-none"
-                    {...register("name")}
+                    autoFocus
+                    enterKeyHint="search"
+                    className="
+        flex-1
+        h-full
+        bg-transparent
+        text-sm sm:text-base
+        placeholder:text-slate-400
+        outline-none
+        px-3
+      "
+                    {...register("name", { required: true })}
                 />
+
+                {/* Button */}
+                <button
+                    type="submit"
+                    disabled={!watch("name")}
+                    className="
+        h-9
+        px-4
+        mr-1
+        flex items-center justify-center
+        text-sm font-medium
+        rounded-full
+        bg-blue-500 text-white
+        hover:bg-blue-600
+        disabled:bg-blue-300 disabled:cursor-not-allowed
+        transition
+      "
+                >
+                    Search
+                </button>
             </div>
-
-            <select
-                {...register("radius", { valueAsNumber: true })}
-                className="text-sm border border-gray-300 rounded-md
-    px-3 h-10 focus:ring-3 focus:ring-blue-500/20
-    focus:border-blue-500 transition outline-none bg-white"
-            >
-                <option value={5000}>Within 5 km</option>
-                <option value={10000}>Within 10 km</option>
-                <option value={25000}>Within 25 km</option>
-            </select>
-
-
-            <button
-                className="px-3.5 h-10 justify-center flex items-center text-sm font-medium rounded-md bg-blue-500 text-white hover:bg-blue-600 transition w-full lg:w-auto">
-                Search
-            </button>
         </form>
     )
 }

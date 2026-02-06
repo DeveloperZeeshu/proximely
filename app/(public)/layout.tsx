@@ -24,7 +24,7 @@ export default function PublicLayout({
     }, [isSidebarOpen])
 
     return (
-        <>
+        <div className="min-h-screen flex flex-col">
             <PublicHeader />
             {
                 isSidebarOpen && (
@@ -35,9 +35,9 @@ export default function PublicLayout({
                 )
             }
             <PublicSidebar />
-            <main>{children}</main>
+            <main className="flex-1">{children}</main>
             <PublicFooter />
-        </>
+        </div>
     )
 }
 
