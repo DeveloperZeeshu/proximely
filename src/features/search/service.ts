@@ -1,8 +1,8 @@
-import { connectToDB } from "@/src/db/dbConnector"
-import Shop from "@/src/models/shop.model"
-import { ProductType } from "@/src/types/product.types"
-import { decodeCursor, encodeCursor } from "@/src/utils/cursor"
-import { ProductDiscoveryInput } from "@/src/validations/productDiscovery/search.schema"
+import { connectToDB } from "@/db/dbConnector"
+import Shop from "@/models/shop.model"
+import { ProductType } from "@/types/product.types"
+import { decodeCursor, encodeCursor } from "@/utils/cursor"
+import { ProductDiscoveryInput } from "@/validations/productDiscovery/search.schema"
 import { buildProductDiscoveryPipeline, CursorObj, fromRow } from "./aggregations"
 
 interface AggregationRow {

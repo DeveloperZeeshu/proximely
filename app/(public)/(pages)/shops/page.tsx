@@ -1,4 +1,4 @@
-import Container from "@/src/components/container/Container";
+import Container from "@/components/container/Container";
 
 export default function Shops() {
     return (

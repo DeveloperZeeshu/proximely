@@ -1,10 +1,10 @@
-import { updateProduct } from "@/src/apis/product.api"
+import { updateProduct } from "@/apis/product.api"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useAppDispatch } from "../redux-hooks"
-import { deleteProduct } from "@/src/store/products/productsSlice"
-import { handleAxiosError } from "@/src/apis/utils/handleAxiosError"
-import { useAppContext } from "@/src/context/AppContext"
+import { deleteProduct } from "@/store/products/productsSlice"
+import { handleAxiosError } from "@/apis/utils/handleAxiosError"
+import { useAppContext } from "@/context/AppContext"
 
 export const useDeleteProduct = () => {
     const [loading, setLoading] = useState(false)

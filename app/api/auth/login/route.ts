@@ -1,7 +1,7 @@
-import { ACCESS_TOKEN_EXPIRY_MS, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY_MS } from "@/src/conf/constants";
-import { cookieConfig } from "@/src/conf/cookieConfig";
-import { LoginErrorType, loginService } from "@/src/features/auth/service";
-import { loginSchema } from "@/src/validations/auth/login.schema";
+import { ACCESS_TOKEN_EXPIRY_MS, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY_MS } from "@/conf/constants";
+import { cookieConfig } from "@/conf/cookieConfig";
+import { LoginErrorType, loginService } from "@/features/auth/service";
+import { loginSchema } from "@/validations/auth/login.schema";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";

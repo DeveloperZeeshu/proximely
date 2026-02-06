@@ -1,4 +1,4 @@
-import conf from "@/src/conf/conf"
+import conf from "@/conf/conf"
 import fs from 'fs'
 import path from "path"
 import { createLogger, transports, format } from "winston"

@@ -3,13 +3,13 @@
 import { Pencil } from "lucide-react"
 import { useEffect, useState } from "react"
 import LocationPicker from "../maps/LocationPicker"
-import { handleAxiosError } from "@/src/apis/utils/handleAxiosError"
-import { updateShop } from "@/src/apis/shop.api"
-import { Button } from "@/src/components/ui/button"
+import { handleAxiosError } from "@/apis/utils/handleAxiosError"
+import { updateShop } from "@/apis/shop.api"
+import { Button } from "@/components/ui/button"
 import toast from "react-hot-toast"
-import { Card, CardTitle } from "@/src/components/ui/card"
-import { useAppDispatch } from "@/src/hooks/redux-hooks"
-import { editShop } from "@/src/store/shop/shopSlice"
+import { Card, CardTitle } from "@/components/ui/card"
+import { useAppDispatch } from "@/hooks/redux-hooks"
+import { editShop } from "@/store/shop/shopSlice"
 
 type Location = {
   lat?: number

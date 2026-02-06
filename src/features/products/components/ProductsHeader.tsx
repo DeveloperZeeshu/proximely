@@ -1,6 +1,6 @@
-import { Button } from "@/src/components/ui/button"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/src/components/ui/select"
-import { useAppContext } from "@/src/context/AppContext"
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useAppContext } from "@/context/AppContext"
 import { Filter, Search } from "lucide-react"
 
 export const ProductsHeader = () => {

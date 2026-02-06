@@ -1,5 +1,5 @@
-import { authorizeUser } from "@/src/apis/auth.api";
-import { SetAuthPayloadType } from "@/src/types/auth.types";
+import { authorizeUser } from "@/apis/auth.api";
+import { SetAuthPayloadType } from "@/types/auth.types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 

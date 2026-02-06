@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { ChevronDown, LayoutDashboard, LogOut, Store } from 'lucide-react'
-import { useLogout } from '@/src/hooks/auth/useLogout'
+import { useLogout } from '@/hooks/auth/useLogout'
 
 type Props = {
   name?: string

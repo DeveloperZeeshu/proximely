@@ -1,6 +1,6 @@
-import { VerifyEmailCard } from "@/src/components/email/VerifyEmailCard"
-import { NoShopCard } from "@/src/features/shop/components/NoShopCard"
-import { useAuth } from "@/src/store/auth/useAuth"
+import { VerifyEmailCard } from "@/components/email/VerifyEmailCard"
+import { NoShopCard } from "@/features/shop/components/NoShopCard"
+import { useAuth } from "@/store/auth/useAuth"
 
 export function AccountGate({ children }: { children: React.ReactNode }) {
   const { isEmailVerified, hasShop } = useAuth()

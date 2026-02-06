@@ -1,6 +1,6 @@
-import logger from "@/core/logger";
-import { ProductDiscoveryErrorType, productDiscoveryService } from "@/src/features/search/service";
-import { productDiscoverySchema } from "@/src/validations/productDiscovery/search.schema";
+import logger from "core/logger";
+import { ProductDiscoveryErrorType, productDiscoveryService } from "@/features/search/service";
+import { productDiscoverySchema } from "@/validations/productDiscovery/search.schema";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 

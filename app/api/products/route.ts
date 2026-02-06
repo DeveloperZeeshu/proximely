@@ -1,7 +1,7 @@
-import logger from "@/core/logger";
-import { AddProductErrorType, addProductService, ProductsErrorType, productsService } from "@/src/features/products/service";
-import { AuthPayload, requireAuth } from "@/src/lib/auth/requireAuth";
-import { addProductSchema } from "@/src/validations/products/add.schema";
+import logger from "core/logger";
+import { AddProductErrorType, addProductService, ProductsErrorType, productsService } from "@/features/products/service";
+import { AuthPayload, requireAuth } from "@/lib/auth/requireAuth";
+import { addProductSchema } from "@/validations/products/add.schema";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 

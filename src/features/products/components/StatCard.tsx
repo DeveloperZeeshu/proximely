@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription } from "@/src/components/ui/card";
+import { Card, CardContent, CardDescription } from "@/components/ui/card";
 
 interface StatCardPropType {
     totalProducts: number

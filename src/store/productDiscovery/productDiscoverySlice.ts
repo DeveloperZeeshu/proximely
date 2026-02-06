@@ -1,5 +1,5 @@
-import { SearchedProductType } from "@/src/features/search/components/ProductCard";
-import { LatLng } from "@/src/types/search.types";
+import { SearchedProductType } from "@/features/search/components/ProductCard";
+import { LatLng } from "@/types/search.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { itemsDiscovery, ProductDiscoveryResponse } from "./productDiscoveryThunk";
 

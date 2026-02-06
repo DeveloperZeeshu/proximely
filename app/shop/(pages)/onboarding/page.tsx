@@ -1,9 +1,9 @@
 "use client"
 
-import Container from "@/src/components/container/Container"
-import { VerifyEmailCard } from "@/src/components/email/VerifyEmailCard"
-import { OnboardingCard } from "@/src/features/shop/components/onboarding/OnboardingCard"
-import { useAuth } from "@/src/store/auth/useAuth"
+import Container from "@/components/container/Container"
+import { VerifyEmailCard } from "@/components/email/VerifyEmailCard"
+import { OnboardingCard } from "@/features/shop/components/onboarding/OnboardingCard"
+import { useAuth } from "@/store/auth/useAuth"
 import { Store } from "lucide-react"
 import { useRouter } from "next/navigation"
 

@@ -1,13 +1,13 @@
 'use client'
 
-import Container from "@/src/components/container/Container";
-import { AddressCard } from "@/src/features/shop/components/manage-profile/AddressCard";
-import { BasicInfoCard } from "@/src/features/shop/components/manage-profile/BasicInfoCard";
-import { LocationCard } from "@/src/features/shop/components/manage-profile/LocationCard";
-import { ShopAppearance } from "@/src/features/shop/components/manage-profile/ShopAppearance";
-import { ShopPreview } from "@/src/features/shop/components/manage-profile/ShopPreview";
-import { useAuth } from "@/src/store/auth/useAuth";
-import { useShop } from "@/src/store/shop/useShop";
+import Container from "@/components/container/Container";
+import { AddressCard } from "@/features/shop/components/manage-profile/AddressCard";
+import { BasicInfoCard } from "@/features/shop/components/manage-profile/BasicInfoCard";
+import { LocationCard } from "@/features/shop/components/manage-profile/LocationCard";
+import { ShopAppearance } from "@/features/shop/components/manage-profile/ShopAppearance";
+import { ShopPreview } from "@/features/shop/components/manage-profile/ShopPreview";
+import { useAuth } from "@/store/auth/useAuth";
+import { useShop } from "@/store/shop/useShop";
 import { AccountGate } from "../../AccountGate";
 
 export default function ShopProfilePage() {

@@ -1,4 +1,4 @@
-import { ProductType } from "@/src/types/product.types";
+import { ProductType } from "@/types/product.types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { fetchAllProducts, FetchProductsResponse } from "./productsThunks";
 

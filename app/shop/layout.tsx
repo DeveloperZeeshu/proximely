@@ -1,16 +1,16 @@
 'use client'
 
-import Container from "@/src/components/container/Container";
-import { useAppContext } from "@/src/context/AppContext";
-import { ProductForm } from "@/src/features/products/components/ProductForm";
-import DashboardSkeleton from "@/src/features/shop/components/DashboardSkeleton";
-import ShopFooter from "@/src/features/shop/components/layout/ShopFooter/ShopFooter";
-import ShopHeader from "@/src/features/shop/components/layout/ShopHeader/ShopHeader";
-import ShopSidebar from "@/src/features/shop/components/layout/ShopSidebar/ShopSidebar";
-import { useAppDispatch } from "@/src/hooks/redux-hooks";
-import { useAuth } from "@/src/store/auth/useAuth";
-import { fetchMyShop } from "@/src/store/shop/shopThunks";
-import { useShop } from "@/src/store/shop/useShop";
+import Container from "@/components/container/Container";
+import { useAppContext } from "@/context/AppContext";
+import { ProductForm } from "@/features/products/components/ProductForm";
+import DashboardSkeleton from "@/features/shop/components/DashboardSkeleton";
+import ShopFooter from "@/features/shop/components/layout/ShopFooter/ShopFooter";
+import ShopHeader from "@/features/shop/components/layout/ShopHeader/ShopHeader";
+import ShopSidebar from "@/features/shop/components/layout/ShopSidebar/ShopSidebar";
+import { useAppDispatch } from "@/hooks/redux-hooks";
+import { useAuth } from "@/store/auth/useAuth";
+import { fetchMyShop } from "@/store/shop/shopThunks";
+import { useShop } from "@/store/shop/useShop";
 import React, { useEffect } from "react";
 
 
@@ -84,5 +84,3 @@ export default function ShopLayout({
         </div>
     )
 }
-
-

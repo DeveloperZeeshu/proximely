@@ -1,8 +1,8 @@
-import logger from "@/core/logger";
-import { VerifyEmailTemplate } from "@/src/components/email/templates/VerifyEmailTemplate";
-import conf from "@/src/conf/conf";
-import { SendVerifyEmailErrorType, sendVerifyEmailService } from "@/src/features/auth/service";
-import { AuthPayload, requireAuth } from "@/src/lib/auth/requireAuth";
+import logger from "core/logger";
+import { VerifyEmailTemplate } from "@/components/email/templates/VerifyEmailTemplate";
+import conf from "@/conf/conf";
+import { SendVerifyEmailErrorType, sendVerifyEmailService } from "@/features/auth/service";
+import { AuthPayload, requireAuth } from "@/lib/auth/requireAuth";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 

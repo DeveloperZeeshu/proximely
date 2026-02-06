@@ -4,11 +4,11 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Check, MailCheck, X, Loader2 } from 'lucide-react'
-import { handleAxiosError } from '@/src/apis/utils/handleAxiosError'
-import { sendEmailVerification, verifyEmail } from '@/src/apis/auth.api'
-import { setEmailStatus } from '@/src/store/auth/authSlice'
-import { useAppDispatch } from '@/src/hooks/redux-hooks'
-import { useAuth } from '@/src/store/auth/useAuth'
+import { handleAxiosError } from '@/apis/utils/handleAxiosError'
+import { sendEmailVerification, verifyEmail } from '@/apis/auth.api'
+import { setEmailStatus } from '@/store/auth/authSlice'
+import { useAppDispatch } from '@/hooks/redux-hooks'
+import { useAuth } from '@/store/auth/useAuth'
 
 
 const RESEND_DELAY = 60

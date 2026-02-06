@@ -1,7 +1,7 @@
-import logger from "@/core/logger"
-import { CreateShopErrorType, createShopService, shopService } from "@/src/features/shop/service"
-import { AuthPayload, requireAuth } from "@/src/lib/auth/requireAuth"
-import { createShopSchema } from "@/src/validations/shop/create.schema"
+import logger from "core/logger"
+import { CreateShopErrorType, createShopService, shopService } from "@/features/shop/service"
+import { AuthPayload, requireAuth } from "@/lib/auth/requireAuth"
+import { createShopSchema } from "@/validations/shop/create.schema"
 import { NextRequest, NextResponse } from "next/server"
 import z from "zod"
 

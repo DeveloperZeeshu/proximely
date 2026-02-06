@@ -1,14 +1,14 @@
 'use client'
 
 import { Plus } from "lucide-react";
-import { useAppContext } from "@/src/context/AppContext";
-import Container from "@/src/components/container/Container";
+import { useAppContext } from "@/context/AppContext";
+import Container from "@/components/container/Container";
 import Link from "next/link";
-import { ShopInfoCard } from "@/src/features/shop/components/ShopInfoCard";
-import { StatCard } from "@/src/features/products/components/StatCard";
-import { Card, CardDescription, CardTitle } from "@/src/components/ui/card";
-import { useProducts } from "@/src/store/products/useProducts";
-import { useShop } from "@/src/store/shop/useShop";
+import { ShopInfoCard } from "@/features/shop/components/ShopInfoCard";
+import { StatCard } from "@/features/products/components/StatCard";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { useProducts } from "@/store/products/useProducts";
+import { useShop } from "@/store/shop/useShop";
 import { AccountGate } from "../../AccountGate";
 
 export default function ShopDashboard() {

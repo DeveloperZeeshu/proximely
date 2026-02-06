@@ -1,4 +1,4 @@
-import SearchedProductCardSkeleton from "@/src/features/search/components/SearchedProductCardSkeleton";
+import SearchedProductCardSkeleton from "@/features/search/components/SearchedProductCardSkeleton";
 
 export default function SearchPageSkeleton() {
     return (

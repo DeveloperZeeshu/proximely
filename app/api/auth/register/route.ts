@@ -1,6 +1,6 @@
-import logger from "@/core/logger";
-import { RegisterErrorType, registerService } from "@/src/features/auth/service";
-import { registerSchema } from "@/src/validations/auth/register.schema";
+import logger from "core/logger";
+import { RegisterErrorType, registerService } from "@/features/auth/service";
+import { registerSchema } from "@/validations/auth/register.schema";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 

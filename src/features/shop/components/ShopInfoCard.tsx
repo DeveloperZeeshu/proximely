@@ -1,5 +1,5 @@
-import { Card, CardTitle } from "@/src/components/ui/card"
-import { ShopInfoType } from "@/src/types/shop.types"
+import { Card, CardTitle } from "@/components/ui/card"
+import { ShopInfoType } from "@/types/shop.types"
 
 export const ShopInfoCard = ({ shop }: { shop: ShopInfoType | null }) => {
     return (

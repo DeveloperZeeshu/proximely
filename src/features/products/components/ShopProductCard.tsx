@@ -1,6 +1,6 @@
-import { useAppContext } from "@/src/context/AppContext";
-import { useDeleteProduct } from "@/src/hooks/products/useDeleteProduct";
-import { ProductType } from "@/src/types/product.types";
+import { useAppContext } from "@/context/AppContext";
+import { useDeleteProduct } from "@/hooks/products/useDeleteProduct";
+import { ProductType } from "@/types/product.types";
 import { Pencil, Trash } from "lucide-react";
 
 export function ShopProductCard({ product }: { product: ProductType }) {

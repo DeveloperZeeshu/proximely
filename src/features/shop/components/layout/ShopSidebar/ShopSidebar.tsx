@@ -3,11 +3,11 @@
 import { type ElementType } from 'react';
 import { LayoutDashboard, Link as LinkIcon, LogOut, PanelRightOpen, Settings2, Store, Warehouse } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
-import { useAppContext } from '@/src/context/AppContext';
+import { useAppContext } from '@/context/AppContext';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/src/store/store';
-import { useLogout } from '@/src/hooks/auth/useLogout';
+import { RootState } from '@/store/store';
+import { useLogout } from '@/hooks/auth/useLogout';
 
 interface NavItem {
     name: string

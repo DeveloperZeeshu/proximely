@@ -6,15 +6,15 @@ import toast from 'react-hot-toast';
 import { X } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch } from 'react-redux';
-import { ProductTabDetails } from "@/src/types/product.types";
-import { handleAxiosError } from "@/src/apis/utils/handleAxiosError";
-import Input from "@/src/components/ui/Input";
-import { addProduct, editProduct } from "@/src/store/products/productsSlice";
-import { useAppContext } from "@/src/context/AppContext";
-import { createProduct, updateProduct } from "@/src/apis/product.api";
+import { ProductTabDetails } from "@/types/product.types";
+import { handleAxiosError } from "@/apis/utils/handleAxiosError";
+import Input from "@/components/ui/Input";
+import { addProduct, editProduct } from "@/store/products/productsSlice";
+import { useAppContext } from "@/context/AppContext";
+import { createProduct, updateProduct } from "@/apis/product.api";
 import { ProductFormInput, productFormSchema } from "../schemas/product.schema";
-import { Button, LoadingButton } from "@/src/components/ui/button";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/src/components/ui/select";
+import { Button, LoadingButton } from "@/components/ui/button";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface ProductFormProps {
   product: ProductTabDetails | null;

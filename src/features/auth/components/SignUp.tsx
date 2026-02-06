@@ -3,16 +3,16 @@
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import Input from '@/src/components/ui/Input'
+import Input from '@/components/ui/Input'
 import { useState } from 'react'
 import { Eye, EyeClosed } from 'lucide-react'
 import Image from 'next/image'
-import { cn } from '@/src/lib/utils'
-import { registerUser } from '@/src/apis/auth.api'
+import { cn } from '@/lib/utils'
+import { registerUser } from '@/apis/auth.api'
 import { RegisterFormData, registerSchema } from '../schemas/register.schema'
 import { useRouter } from 'next/navigation'
-import { handleAxiosError } from '@/src/apis/utils/handleAxiosError'
-import { Button, LoadingButton } from '@/src/components/ui/button'
+import { handleAxiosError } from '@/apis/utils/handleAxiosError'
+import { Button, LoadingButton } from '@/components/ui/button'
 
 export default function SignUp() {
     const {

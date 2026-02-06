@@ -1,13 +1,13 @@
 'use client'
 
-import { useAppContext } from '@/src/context/AppContext'
+import { useAppContext } from '@/context/AppContext'
 import { Menu } from 'lucide-react'
 import Link from 'next/link.js'
 import { usePathname } from 'next/navigation'
 import { HeaderProfile } from './HeaderProfile'
 import { HeaderSkeleton } from './HeaderSkeleton'
-import { useAuth } from '@/src/store/auth/useAuth'
-import { useShop } from '@/src/store/shop/useShop'
+import { useAuth } from '@/store/auth/useAuth'
+import { useShop } from '@/store/shop/useShop'
 
 interface NavItem {
     name: string

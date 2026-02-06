@@ -1,6 +1,6 @@
-import { UpdateProductErrorType, updateProductService } from "@/src/features/products/service";
-import { AuthPayload, requireAuth } from "@/src/lib/auth/requireAuth";
-import { updateProductSchema } from "@/src/validations/products/update.schema";
+import { UpdateProductErrorType, updateProductService } from "@/features/products/service";
+import { AuthPayload, requireAuth } from "@/lib/auth/requireAuth";
+import { updateProductSchema } from "@/validations/products/update.schema";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 

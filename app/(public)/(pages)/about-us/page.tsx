@@ -1,7 +1,7 @@
 'use client'
 
-import Container from "@/src/components/container/Container"
-import { Card, CardContent, CardDescription, CardTitle } from "@/src/components/ui/card"
+import Container from "@/components/container/Container"
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
 import { MapPin, Store, Search, ShieldCheck, Users } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import Link from "next/link"

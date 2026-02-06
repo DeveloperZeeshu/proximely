@@ -1,4 +1,4 @@
-import logger from '@/core/logger'
+import logger from 'core/logger'
 import { NextResponse } from 'next/server'
 
 export async function GET() {

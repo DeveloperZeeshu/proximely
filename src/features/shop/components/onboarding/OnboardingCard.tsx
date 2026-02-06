@@ -1,18 +1,18 @@
 'use client'
 
-import Input from "@/src/components/ui/Input"
+import Input from "@/components/ui/Input"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { handleAxiosError } from "@/src/apis/utils/handleAxiosError"
+import { handleAxiosError } from "@/apis/utils/handleAxiosError"
 import { CreateShopInput, createShopSchema } from "../../schemas/create.schema"
-import { Button } from "@/src/components/ui/button"
-import { createShop } from "@/src/apis/shop.api"
-import { useAppDispatch } from "@/src/hooks/redux-hooks"
-import { editShop } from "@/src/store/shop/shopSlice"
+import { Button } from "@/components/ui/button"
+import { createShop } from "@/apis/shop.api"
+import { useAppDispatch } from "@/hooks/redux-hooks"
+import { editShop } from "@/store/shop/shopSlice"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
-import { setShopStatus } from "@/src/store/auth/authSlice"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/src/components/ui/select"
+import { setShopStatus } from "@/store/auth/authSlice"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export function OnboardingCard() {
     const {
@@ -77,7 +77,7 @@ export function OnboardingCard() {
               <Select
                 value={field.value}
                 onValueChange={field.onChange}>
-                <SelectTrigger className="">
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent className="z-70">

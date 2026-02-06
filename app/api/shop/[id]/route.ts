@@ -1,7 +1,7 @@
-import logger from "@/core/logger";
-import { UpdateShopErrorType, updateShopService } from "@/src/features/shop/service";
-import { AuthPayload, requireAuth } from "@/src/lib/auth/requireAuth";
-import { updateShopSchema } from "@/src/validations/shop/update.schema";
+import logger from "core/logger";
+import { UpdateShopErrorType, updateShopService } from "@/features/shop/service";
+import { AuthPayload, requireAuth } from "@/lib/auth/requireAuth";
+import { updateShopSchema } from "@/validations/shop/update.schema";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 

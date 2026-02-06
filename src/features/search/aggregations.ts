@@ -1,4 +1,4 @@
-import { ProductDiscoveryInput } from "@/src/validations/productDiscovery/search.schema"
+import { ProductDiscoveryInput } from "@/validations/productDiscovery/search.schema"
 import { PipelineStage } from "mongoose"
 
 const SORT_MAP = {

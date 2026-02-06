@@ -1,5 +1,5 @@
-import { fetchShopDetails } from "@/src/apis/shop.api";
-import { ShopInfoType } from "@/src/types/shop.types";
+import { fetchShopDetails } from "@/apis/shop.api";
+import { ShopInfoType } from "@/types/shop.types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchMyShop = createAsyncThunk<ShopInfoType>(

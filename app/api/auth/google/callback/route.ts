@@ -1,9 +1,9 @@
 // app/api/auth/google/callback/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-import { handleGoogleLoginService } from '@/src/features/auth/service'
-import { cookieConfig } from '@/src/conf/cookieConfig'
-import { ACCESS_TOKEN_EXPIRY_MS, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY_MS } from '@/src/conf/constants'
+import { handleGoogleLoginService } from '@/features/auth/service'
+import { cookieConfig } from '@/conf/cookieConfig'
+import { ACCESS_TOKEN_EXPIRY_MS, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY_MS } from '@/conf/constants'
 
 export const GET = async (req: NextRequest) => {
     try {

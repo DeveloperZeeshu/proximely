@@ -1,5 +1,5 @@
-import { getProducts } from "@/src/apis/product.api";
-import { ProductType } from "@/src/types/product.types";
+import { getProducts } from "@/apis/product.api";
+import { ProductType } from "@/types/product.types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 type FetchProductsArgs = {

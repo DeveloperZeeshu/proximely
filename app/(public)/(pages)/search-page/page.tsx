@@ -6,24 +6,23 @@ import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-import Container from '@/src/components/container/Container'
-import { Button } from '@/src/components/ui/button'
+import Container from '@/components/container/Container'
 import {
     Pagination,
     PaginationEllipsis,
     PaginationNext,
     PaginationPageNumber,
     PaginationPrevious
-} from '@/src/components/ui/pagination'
+} from '@/components/ui/pagination'
 
-import { ProductCard } from '@/src/features/search/components/ProductCard'
-import { SearchForm } from '@/src/features/search/components/SearchForm'
-import SearchPageSkeleton from '@/src/features/search/components/SearchPageSkeleton'
-import { FilterBar } from '@/src/features/search/components/FilterBar'
+import { ProductCard } from '@/features/search/components/ProductCard'
+import { SearchForm } from '@/features/search/components/SearchForm'
+import SearchPageSkeleton from '@/features/search/components/SearchPageSkeleton'
+import { FilterBar } from '@/features/search/components/FilterBar'
 
-import { useProductDiscovery } from '@/src/store/productDiscovery/useProductDiscovery'
-import { itemsDiscovery } from '@/src/store/productDiscovery/productDiscoveryThunk'
-import { useAppDispatch } from '@/src/hooks/redux-hooks'
+import { useProductDiscovery } from '@/store/productDiscovery/useProductDiscovery'
+import { itemsDiscovery } from '@/store/productDiscovery/productDiscoveryThunk'
+import { useAppDispatch } from '@/hooks/redux-hooks'
 
 export default function SearchPage() {
     const router = useRouter()

@@ -6,8 +6,8 @@ import {
   ArrowRight,
   Syringe,
 } from "lucide-react"
-import Container from "@/src/components/container/Container"
-import { SearchForm } from "@/src/features/search/components/SearchForm"
+import Container from "@/components/container/Container"
+import { SearchForm } from "@/features/search/components/SearchForm"
 
 
 const items = [

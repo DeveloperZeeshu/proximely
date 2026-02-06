@@ -1,9 +1,9 @@
-import { connectToDB } from "@/src/db/dbConnector"
-import Product from "@/src/models/product.model"
-import Shop from "@/src/models/shop.model"
-import { ProductType } from "@/src/types/product.types"
-import { AddProductInput } from "@/src/validations/products/add.schema"
-import { UpdateProductInput } from "@/src/validations/products/update.schema"
+import { connectToDB } from "@/db/dbConnector"
+import Product from "@/models/product.model"
+import Shop from "@/models/shop.model"
+import { ProductType } from "@/types/product.types"
+import { AddProductInput } from "@/validations/products/add.schema"
+import { UpdateProductInput } from "@/validations/products/update.schema"
 import mongoose from "mongoose"
 
 

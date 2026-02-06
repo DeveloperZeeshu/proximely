@@ -1,5 +1,5 @@
-import { fromLeftVariants } from '@/src/animations/fromLeftVariants'
-import { ShopLocation } from '@/src/types/shop.types'
+import { fromLeftVariants } from '@/animations/fromLeftVariants'
+import { ShopLocation } from '@/types/shop.types'
 import { MapPin, Phone } from 'lucide-react'
 import { motion } from 'motion/react'
 import Image from 'next/image'

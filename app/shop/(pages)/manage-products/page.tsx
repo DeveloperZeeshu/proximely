@@ -1,19 +1,19 @@
 'use client'
 
-import ProductsSkeleton from "@/src/features/products/components/ProductsSkeleton";
-import ProductListCard from "@/src/features/products/components/ProductListCard";
-import Container from "@/src/components/container/Container";
-import { useAppDispatch } from "@/src/hooks/redux-hooks";
-import { ShopProductCard } from "@/src/features/products/components/ShopProductCard";
-import { fetchAllProducts } from "@/src/store/products/productsThunks";
+import ProductsSkeleton from "@/features/products/components/ProductsSkeleton";
+import ProductListCard from "@/features/products/components/ProductListCard";
+import Container from "@/components/container/Container";
+import { useAppDispatch } from "@/hooks/redux-hooks";
+import { ShopProductCard } from "@/features/products/components/ShopProductCard";
+import { fetchAllProducts } from "@/store/products/productsThunks";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Pagination, PaginationEllipsis, PaginationNext, PaginationPageNumber, PaginationPrevious } from "@/src/components/ui/pagination";
-import { ProductsHeader } from "@/src/features/products/components/ProductsHeader";
+import { Pagination, PaginationEllipsis, PaginationNext, PaginationPageNumber, PaginationPrevious } from "@/components/ui/pagination";
+import { ProductsHeader } from "@/features/products/components/ProductsHeader";
 import { useEffect } from "react";
 import { Menu } from "lucide-react";
-import { useAppContext } from "@/src/context/AppContext";
-import { useAuth } from "@/src/store/auth/useAuth";
-import { useProducts } from "@/src/store/products/useProducts";
+import { useAppContext } from "@/context/AppContext";
+import { useAuth } from "@/store/auth/useAuth";
+import { useProducts } from "@/store/products/useProducts";
 import { AccountGate } from "../../AccountGate";
 
 export default function ManageProducts() {

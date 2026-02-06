@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { authorize } from "./authThunks";
-import { RoleType, SetAuthPayloadType } from "@/src/types/auth.types";
+import { RoleType, SetAuthPayloadType } from "@/types/auth.types";
 
 export type AuthStatus =
   | "loading"          

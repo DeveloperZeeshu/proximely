@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useEffect } from "react";
-import PublicHeader from "../../src/components/layout/PublicHeader/PublicHeader";
-import PublicFooter from "../../src/components/layout/PublicFooter/PublicFooter";
-import PublicSidebar from "../../src/components/layout/PublicSidebar/PublicSidebar";
-import { useAppContext } from "@/src/context/AppContext";
+import PublicHeader from "@/components/layout/PublicHeader/PublicHeader";
+import PublicFooter from "@/components/layout/PublicFooter/PublicFooter";
+import PublicSidebar from "@/components/layout/PublicSidebar/PublicSidebar";
+import { useAppContext } from "@/context/AppContext";
 
 export default function PublicLayout({
     children

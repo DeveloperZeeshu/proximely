@@ -1,6 +1,6 @@
 'use client'
 
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/src/components/ui/select'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 
 export function FilterBar() {

@@ -1,7 +1,7 @@
-import logger from "@/core/logger";
-import { ACCESS_TOKEN_EXPIRY_MS, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY_MS } from "@/src/conf/constants";
-import { cookieConfig } from "@/src/conf/cookieConfig";
-import { refreshTokensService } from "@/src/features/auth/service";
+import logger from "core/logger";
+import { ACCESS_TOKEN_EXPIRY_MS, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY_MS } from "@/conf/constants";
+import { cookieConfig } from "@/conf/cookieConfig";
+import { refreshTokensService } from "@/features/auth/service";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 

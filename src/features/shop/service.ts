@@ -1,8 +1,8 @@
-import { connectToDB } from "@/src/db/dbConnector"
-import Shop from "@/src/models/shop.model"
-import { ShopInfoType } from "@/src/types/shop.types"
-import { CreateShopInput } from "@/src/validations/shop/create.schema"
-import { UpdateShopInput } from "@/src/validations/shop/update.schema"
+import { connectToDB } from "@/db/dbConnector"
+import Shop from "@/models/shop.model"
+import { ShopInfoType } from "@/types/shop.types"
+import { CreateShopInput } from "@/validations/shop/create.schema"
+import { UpdateShopInput } from "@/validations/shop/update.schema"
 
 
 // Create shop service 

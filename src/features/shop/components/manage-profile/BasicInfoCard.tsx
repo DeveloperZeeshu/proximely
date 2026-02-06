@@ -1,18 +1,18 @@
 'use client'
 
 import { Actions } from "./Actions"
-import Input from "@/src/components/ui/Input"
+import Input from "@/components/ui/Input"
 import { Pencil } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { handleAxiosError } from "@/src/apis/utils/handleAxiosError"
+import { handleAxiosError } from "@/apis/utils/handleAxiosError"
 import { UpdateShopInput, updateShopSchema } from "../../schemas/update.schema"
-import { updateShop } from "@/src/apis/shop.api"
+import { updateShop } from "@/apis/shop.api"
 import toast from "react-hot-toast"
-import { useAppDispatch } from "@/src/hooks/redux-hooks"
-import { editShop } from "@/src/store/shop/shopSlice"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/src/components/ui/select"
+import { useAppDispatch } from "@/hooks/redux-hooks"
+import { editShop } from "@/store/shop/shopSlice"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 type BasicInfoType = {
   shopName?: string

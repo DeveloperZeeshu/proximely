@@ -1,5 +1,5 @@
-import logger from "@/core/logger"
-import { VerifyEmailErrorType, verifyEmailService } from "@/src/features/auth/service"
+import logger from "core/logger"
+import { VerifyEmailErrorType, verifyEmailService } from "@/features/auth/service"
 import { NextRequest, NextResponse } from "next/server"
 import z from "zod"
 

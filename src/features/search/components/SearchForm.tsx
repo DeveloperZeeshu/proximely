@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { SearchProductInput, searchProductsSchema } from "../../products/schemas/search.schema";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getCurrentLocation } from "@/src/utils/getCurrentLocation";
+import { getCurrentLocation } from "@/utils/getCurrentLocation";
 import { Search } from "lucide-react";
 
 export const SearchForm = () => {

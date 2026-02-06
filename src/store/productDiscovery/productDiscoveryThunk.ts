@@ -1,6 +1,6 @@
-import { productDiscovery } from "@/src/apis/productDiscovery.api";
-import { SearchedProductType } from "@/src/features/search/components/ProductCard";
-import { LatLng } from "@/src/types/search.types";
+import { productDiscovery } from "@/apis/productDiscovery.api";
+import { SearchedProductType } from "@/features/search/components/ProductCard";
+import { LatLng } from "@/types/search.types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 type ProductDiscoveryArgs = {

@@ -1,5 +1,5 @@
-import logger from "@/core/logger";
-import { authorizeService } from "@/src/features/auth/service";
+import logger from "core/logger";
+import { authorizeService } from "@/features/auth/service";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 

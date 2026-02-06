@@ -3,7 +3,7 @@ import 'server-only'
 
 import { cookies } from "next/headers"
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import conf from "@/src/conf/conf"
+import conf from "@/conf/conf"
 
 export type AuthPayload = JwtPayload & {
     sub: string

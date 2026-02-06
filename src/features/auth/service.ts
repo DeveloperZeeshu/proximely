@@ -1,16 +1,16 @@
 import 'server-only'
 
-import { connectToDB } from "@/src/db/dbConnector"
-import User from "@/src/models/user.model"
+import { connectToDB } from "@/db/dbConnector"
+import User from "@/models/user.model"
 import argon2 from 'argon2'
 import crypto from 'crypto'
-import Session from '@/src/models/session.model'
-import { ACCESS_TOKEN_EXPIRY_MS, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY_MS, VERIFICATION_TOKEN_EXPIRY_MS } from '@/src/conf/constants'
+import Session from '@/models/session.model'
+import { ACCESS_TOKEN_EXPIRY_MS, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY_MS, VERIFICATION_TOKEN_EXPIRY_MS } from '@/conf/constants'
 import jwt from 'jsonwebtoken'
-import conf from '@/src/conf/conf'
-import Shop from '@/src/models/shop.model'
-import { createEmailVerifyToken } from '@/src/lib/tokens/verificationToken'
-import EmailVerification from '@/src/models/email-verification.model'
+import conf from '@/conf/conf'
+import Shop from '@/models/shop.model'
+import { createEmailVerifyToken } from '@/lib/tokens/verificationToken'
+import EmailVerification from '@/models/email-verification.model'
 import { OAuth2Client } from 'google-auth-library'
 
 // Creating and hashing tokens

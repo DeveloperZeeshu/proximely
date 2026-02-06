@@ -1,4 +1,4 @@
-import ShopForm from "@/src/features/auth/components/SignUp";
+import ShopForm from "@/features/auth/components/SignUp";
 
 export default function Register() {
     return (
