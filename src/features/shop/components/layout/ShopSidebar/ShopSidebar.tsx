@@ -65,7 +65,7 @@ export default function ShopSidebar() {
 
     return (
         <>
-            <aside className={`border-r border-slate-100 p-4 flex flex-col justify-start bg-white/80  gap-9 z-60 fixed top-0 left-0 h-screen w-74 backdrop-blur-sm transition-transform duration-300 ${shopSidebarOpen ? 'translate-x-0' : '-translate-x-full'} rounded-r-lg`}>
+            <aside className={`border-r border-slate-100 p-4 flex flex-col justify-start bg-white/80 gap-9 z-60 fixed top-0 left-0 h-dvh overflow-y-auto w-74 backdrop-blur-sm transition-transform duration-300 ${shopSidebarOpen ? 'translate-x-0' : '-translate-x-full'} rounded-r-lg`}>
 
                 <p className="flex justify-end w-full">
                     <PanelRightOpen
