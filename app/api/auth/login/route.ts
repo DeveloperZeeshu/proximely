@@ -2,6 +2,7 @@ import { ACCESS_TOKEN_EXPIRY_MS, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY_M
 import { cookieConfig } from "@/conf/cookieConfig";
 import { LoginErrorType, loginService } from "@/features/auth/service";
 import { loginSchema } from "@/validations/auth/login.schema";
+import logger from "core/logger";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
@@ -47,7 +48,7 @@ export const POST = async (req: NextRequest) => {
         if (!result.ok) {
             const err = LOGIN_ERROR_MAP[result.code]
             if (!err) {
-                console.error('Unhandled LoginErrorType:', result.code)
+                logger.error('Unhandled LoginErrorType:', result.code)
 
                 return NextResponse.json({
                     success: false,
@@ -84,7 +85,7 @@ export const POST = async (req: NextRequest) => {
         }, { status: 200 })
 
     } catch (err: unknown) {
-        console.error('Login Api Error:', err)
+        logger.error('Login Api Error:', err)
 
         return NextResponse.json({
             success: false,

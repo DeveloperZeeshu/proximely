@@ -49,7 +49,7 @@ export const POST = async (req: NextRequest) => {
         if (!result.ok) {
             const err = SHOP_ERROR_MAP[result.code]
             if (!err) {
-                logger.error('Unhandled CreateShopErrorType:', { code: result.code })
+                logger.error('Unhandled CreateShopErrorType:',  result.code )
 
                 return NextResponse.json({
                     success: false,
@@ -69,7 +69,7 @@ export const POST = async (req: NextRequest) => {
         }, { status: 201 })
 
     } catch (err: unknown) {
-        logger.error('Create Shop Error:', { err })
+        logger.error('Create Shop Error:',  err )
 
         return NextResponse.json({
             success: false,
@@ -99,7 +99,7 @@ export const GET = async (req: NextRequest) => {
         if (!result.ok) {
             const err = SHOP_ERROR_MAP[result.code]
             if (!err) {
-                logger.error('Unhandled FetchShopErrorType:', { code: result.code })
+                logger.error('Unhandled FetchShopErrorType:',result.code )
 
                 return NextResponse.json({
                     success: false,
@@ -118,7 +118,7 @@ export const GET = async (req: NextRequest) => {
         }, { status: 200 })
 
     } catch (err: unknown) {
-        logger.error('Fetch Shop Error:', { err })
+        logger.error('Fetch Shop Error:', err )
 
         return NextResponse.json({
             success: false,

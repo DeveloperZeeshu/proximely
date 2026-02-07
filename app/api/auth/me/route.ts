@@ -16,7 +16,7 @@ export const GET = async (req: NextRequest) => {
         if (!result.ok) {
             const err = AUTHORIZE_ERROR_MAP[result.code]
             if (!err) {
-                logger.error('Unhandled AuthorizeErrorType.', { code: result.code })
+                logger.error('Unhandled AuthorizeErrorType.', result.code )
 
                 return NextResponse.json({
                     success: false,
@@ -37,7 +37,7 @@ export const GET = async (req: NextRequest) => {
         }, { status: 200 })
 
     } catch (err: unknown) {
-        logger.error('Unhandled authorization error.', { err })
+        logger.error('Unhandled authorization error.',  err )
 
         return NextResponse.json({
             success: false,

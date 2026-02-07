@@ -45,7 +45,7 @@ export const POST = async (req: NextRequest) => {
         }, { status: 200 })
 
     } catch (err: unknown) {
-        logger.error('Unhandled logout error.', { err })
+        logger.error('Unhandled logout error.',  err )
 
         return NextResponse.json({
             success: false,

@@ -1,6 +1,7 @@
 import { UpdateProductErrorType, updateProductService } from "@/features/products/service";
 import { AuthPayload, requireAuth } from "@/lib/auth/requireAuth";
 import { updateProductSchema } from "@/validations/products/update.schema";
+import logger from "core/logger";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
@@ -54,7 +55,7 @@ export const PATCH = async (
         if (!result.ok) {
             const err = UPDATE_PRODUCT_ERROR_MAP[result.code]
             if (!err) {
-                console.error('Unhandled UpdateProductErrorType:', result.code)
+                logger.error('Unhandled UpdateProductErrorType:', result.code)
 
                 return NextResponse.json({
                     success: false,
@@ -74,7 +75,7 @@ export const PATCH = async (
         }, { status: 200 })
 
     } catch (err: unknown) {
-        console.error('Product Update Error:', err)
+        logger.error('Product Update Error:', err)
 
         return NextResponse.json({
             success: false,

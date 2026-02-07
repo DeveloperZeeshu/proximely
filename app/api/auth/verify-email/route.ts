@@ -29,7 +29,7 @@ export const POST = async (req: NextRequest) => {
             const err = VERIFY_EMAIL_MAP[result.code]
 
             if (!err) {
-                logger.error('Unhandled VerifyEmailError', { code: result.code })
+                logger.error('Unhandled VerifyEmailError', result.code )
 
                 return NextResponse.json({
                     success: false,
@@ -48,7 +48,7 @@ export const POST = async (req: NextRequest) => {
         }, { status: 200 })
 
     } catch (err: unknown) {
-        logger.error('Email verification failed error', { err })
+        logger.error('Email verification failed error',  err )
 
         return NextResponse.json({
             success: false,

@@ -36,7 +36,7 @@ export const POST = async (req: NextRequest) => {
         if (!result.ok) {
             const err = REGISTER_ERROR_MAP[result.code]
             if (!err) {
-                logger.error('Unhandled RegisterErrorType:', { code: result.code })
+                logger.error('Unhandled RegisterErrorType:', result.code)
                 return NextResponse.json({
                     success: false,
                     message: 'Internal server error.'
@@ -54,9 +54,9 @@ export const POST = async (req: NextRequest) => {
         }, { status: 201 })
 
     } catch (err: unknown) {
-        logger.error('Unhandled registration error', {
+        logger.error('Unhandled registration error',
             err
-        })
+        )
 
         return NextResponse.json({
             success: false,

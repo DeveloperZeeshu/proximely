@@ -35,7 +35,7 @@ export const POST = async (req: NextRequest) => {
             const err = PRODUCT_DISCOVERY_ERROR_MAP[result.code]
 
             if (!err) {
-                logger.error('Unhandled SearchProductErrorCode', { code: result.code })
+                logger.error('Unhandled SearchProductErrorCode', result.code )
 
                 return NextResponse.json({
                     success: false,
@@ -59,7 +59,7 @@ export const POST = async (req: NextRequest) => {
         }, { status: 200 })
 
     } catch (err: unknown) {
-        logger.error('Unhandled location based product error.', { err })
+        logger.error('Unhandled location based product error.',  err )
 
         return NextResponse.json({
             success: false,

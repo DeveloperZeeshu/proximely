@@ -37,7 +37,7 @@ export const POST = async (req: NextRequest) => {
             const err = SEND_VERIFY_EMAIL_MAP[result.code]
 
             if (!err) {
-                logger.error('Unhandled SendVerifyEmailError', { code: result.code })
+                logger.error('Unhandled SendVerifyEmailError', result.code )
 
                 return NextResponse.json({
                     success: false,
@@ -83,7 +83,7 @@ export const POST = async (req: NextRequest) => {
             message: 'Verification email sent.'
         }, { status: 200 })
     } catch (err: unknown) {
-        logger.error('Send email verification error', { err })
+        logger.error('Send email verification error',  err )
 
         return NextResponse.json({
             success: false,

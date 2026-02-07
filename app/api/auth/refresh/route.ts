@@ -37,7 +37,7 @@ export const POST = async (req: NextRequest) => {
         }, { status: 200 })
 
     } catch (err: unknown) {
-        logger.error('Refresh Error:', { err })
+        logger.error('Refresh Error:',  err )
 
         return NextResponse.json({
             success: false,

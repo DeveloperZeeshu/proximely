@@ -55,7 +55,7 @@ export const PATCH = async (
         if (!result.ok) {
             const err = UPDATE_SHOP_ERROR_MAP[result.code]
             if (!err) {
-                logger.error('Unhandled UpdateShopErrorType:', { code: result.code })
+                logger.error('Unhandled UpdateShopErrorType:',  result.code )
 
                 return NextResponse.json({
                     success: false,
@@ -75,7 +75,7 @@ export const PATCH = async (
         }, { status: 200 })
 
     } catch (err: unknown) {
-        logger.error('Shop Update Error:', { err })
+        logger.error('Shop Update Error:',  err )
 
         return NextResponse.json({
             success: false,

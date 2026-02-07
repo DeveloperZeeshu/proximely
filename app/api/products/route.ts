@@ -44,7 +44,7 @@ export const GET = async (req: NextRequest) => {
         if (!result.ok) {
             const err = PRODUCTS_ERROR_MAP[result.code]
             if (!err) {
-                logger.error('Unhandled ProductsErrorType:', { code: result.code })
+                logger.error('Unhandled ProductsErrorType:',  result.code )
 
                 return NextResponse.json({
                     success: false,
@@ -68,7 +68,7 @@ export const GET = async (req: NextRequest) => {
         }, { status: 200 })
 
     } catch (err: unknown) {
-        logger.error('Fetch Products Error:', { err })
+        logger.error('Fetch Products Error:', err )
 
         return NextResponse.json({
             success: false,
@@ -123,7 +123,7 @@ export const POST = async (req: NextRequest) => {
         if (!result.ok) {
             const err = ADD_PRODUCT_ERROR_MAP[result.code]
             if (!err) {
-                logger.error('Unhandled AddProductErrorType: ', { code: result.code })
+                logger.error('Unhandled AddProductErrorType: ',  result.code )
 
                 return NextResponse.json({
                     success: false,
@@ -143,7 +143,7 @@ export const POST = async (req: NextRequest) => {
         }, { status: 201 })
 
     } catch (err: unknown) {
-        logger.error('Add Product Error:', { err })
+        logger.error('Add Product Error:',  err )
 
         return NextResponse.json({
             success: false,
