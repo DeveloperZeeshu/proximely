@@ -15,8 +15,6 @@ const RESEND_DELAY = 60
 
 export default function VerifyEmailPage() {
   const dispatch = useAppDispatch()
-  const searchParams = useSearchParams()
-  const token = searchParams.get('token')
 
   const router = useRouter()
 
@@ -26,6 +24,7 @@ export default function VerifyEmailPage() {
   const [verifying, setVerifying] = useState(false)
   const [sendError, setSendError] = useState<string | null>(null)
   const [verifyError, setVerifyError] = useState<string | null>(null)
+  const [token, setToken] = useState<string | null>(null)
 
   const [resendTimer, setResendTimer] = useState(() => {
     if (typeof window === 'undefined') return 0
@@ -36,6 +35,12 @@ export default function VerifyEmailPage() {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const sent = resendTimer > 0
+
+
+  useEffect(() => {
+    const t = new URLSearchParams(window.location.search).get('token')
+    if (t) setToken(t)
+  }, [])
 
   /* -------------------- Send Verification Email -------------------- */
   const sendVerifyEmail = async () => {
@@ -55,26 +60,6 @@ export default function VerifyEmailPage() {
       setSending(false)
     }
   }
-
-  /* -------------------- Verify Token -------------------- */
-  const verifyEmailToken = useCallback(async () => {
-    if (!token || authLoading || isEmailVerified) return
-
-    setVerifyError(null)
-    setVerifying(true)
-
-    try {
-      await verifyEmail(token)
-      dispatch(setEmailStatus(true))
-      localStorage.removeItem('resend_timer')
-    } catch (err) {
-      setVerifyError('Verification link is invalid or expired.')
-      router.replace('/auth/verify-email')
-      handleAxiosError(err)
-    } finally {
-      setVerifying(false)
-    }
-  }, [token, isEmailVerified, dispatch])
 
   /* -------------------- Countdown Timer -------------------- */
   useEffect(() => {
@@ -105,10 +90,27 @@ export default function VerifyEmailPage() {
 
   /* -------------------- Auto Verify -------------------- */
   useEffect(() => {
-    if (!authLoading && token && !isEmailVerified) {
-      verifyEmailToken()
+    if (authLoading || isEmailVerified || !token) return
+
+    const verifyEmailToken = async () => {
+      setVerifyError(null)
+      setVerifying(true)
+
+      try {
+        await verifyEmail(token)
+        dispatch(setEmailStatus(true))
+        localStorage.removeItem('resend_timer')
+      } catch (err) {
+        setVerifyError('Verification link is invalid or expired.')
+        router.replace('/auth/verify-email')
+        handleAxiosError(err)
+      } finally {
+        setVerifying(false)
+      }
     }
-  }, [token, isEmailVerified, verifyEmailToken])
+
+    verifyEmailToken()
+  }, [authLoading, isEmailVerified, dispatch, router])
 
   /* ==================== UI STATES ==================== */
 
