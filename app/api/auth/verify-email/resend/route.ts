@@ -60,7 +60,7 @@ export const POST = async (req: NextRequest) => {
         }
 
         const { error } = await resend.emails.send({
-            from: 'Proximely <no-reply@proximely.in>',
+            from: 'Proximely <no-reply@contact.proximely.in>',
             to: email,
             subject: 'Verify your email to get started',
             react: VerifyEmailTemplate({
