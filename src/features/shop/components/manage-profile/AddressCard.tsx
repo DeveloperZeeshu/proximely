@@ -158,7 +158,7 @@ export function AddressCard({ shopAddress = {}, shopId }: PropType) {
                     <SelectContent className="z-70">
                       <SelectGroup>
                         <SelectLabel>State</SelectLabel>
-                        <SelectItem value="jaipur">Rajasthan</SelectItem>
+                        <SelectItem value="rajasthan">Rajasthan</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>

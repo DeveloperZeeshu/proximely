@@ -47,7 +47,7 @@ export type LoginErrorType =
     'INVALID_CREDENTIALS' | 'MISSING_FIELDS' | 'BAD_REQUEST'
 
 type LoginResult =
-    | { ok: true, hasShop: boolean, roles: RoleType[], isEmailVerified: boolean, accessToken: string, refreshToken: string }
+    | { ok: true, accessToken: string, refreshToken: string }
     | { ok: false, code: LoginErrorType }
 
 type LoginInput = {
@@ -114,14 +114,8 @@ export const loginService = async ({
         sid: session._id
     })
 
-    // Getting Shop info for frontend
-    const hasShop = await Shop.exists({ ownerId: existingUser._id })
-
     return {
         ok: true,
-        hasShop: Boolean(hasShop),
-        roles: existingUser.roles,
-        isEmailVerified: Boolean(existingUser.emailVerifiedAt),
         accessToken,
         refreshToken
     } as const

@@ -2,20 +2,25 @@ import { useAppContext } from "@/context/AppContext";
 import { useDeleteProduct } from "@/hooks/products/useDeleteProduct";
 import { ProductType } from "@/types/product.types";
 import { Pencil, Trash } from "lucide-react";
+import Image from "next/image";
 
 export function ShopProductCard({ product }: { product: ProductType }) {
     const { mutate, loading } = useDeleteProduct()
 
-    const {openEditProductForm} = useAppContext()
+    const { openEditProductForm } = useAppContext()
 
     return (
         <div className="bg-white flex items-center gap-3 border-b border-gray-200 px-3 py-2 rounded-lg">
             {/* Image */}
-            <img
-                src={`https://placehold.co/80x80?text=${product.name}`}
-                alt={product.name}
-                className="h-12 w-12 shrink-0 rounded object-cover"
-            />
+            <div className="relative h-12 w-12">
+                <Image
+                    src={product.imageUrl || "/images/product-placeholder.jpg"}
+                    alt={product.name}
+                    fill
+                    sizes="48px"
+                    className="rounded object-cover"
+                />
+            </div>
 
             {/* Content */}
             <div className="min-w-0 flex-1">

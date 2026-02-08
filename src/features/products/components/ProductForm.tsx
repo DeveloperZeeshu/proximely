@@ -122,7 +122,7 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
                   <Select
                     value={field.value}
                     onValueChange={field.onChange}>
-                    <SelectTrigger className="w-32">
+                    <SelectTrigger className="w-full lg:w-32">
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent className="z-70">

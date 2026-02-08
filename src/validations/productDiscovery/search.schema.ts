@@ -29,11 +29,11 @@ export const productDiscoverySchema = z.object({
             .number()
             .min(5000)
             .optional(),
-    }).strict(),
 
-    sort: z
-        .enum(['distance', 'price_asc', 'price_desc'])
-        .default('distance'),
+        sort: z
+            .enum(['distance', 'price_asc', 'price_desc'])
+            .default('distance')
+    }).strict(),
 
     cursor: z
         .string()
@@ -42,7 +42,7 @@ export const productDiscoverySchema = z.object({
         .optional(),
     dir: z
         .enum(['next', 'prev'])
-        .optional(),
+        .nullable(),
     limit: z
         .number()
         .min(1)

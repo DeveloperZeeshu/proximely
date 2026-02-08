@@ -35,14 +35,14 @@ export const productDiscoveryService = async ({
 }): Promise<ProductDiscoveryResult> => {
     await connectToDB()
 
-    const { query, cursor: cursorStr, sort, dir = 'next', limit = 1 } = data
+    const { query, cursor: cursorStr, dir, limit = 10 } = data
 
     let decodedCursor: CursorObj | null = null
     if (cursorStr) {
         decodedCursor = decodeCursor<CursorObj>(cursorStr)
     }
 
-    const pipeline = buildProductDiscoveryPipeline(query, sort, decodedCursor, dir, limit)
+    const pipeline = buildProductDiscoveryPipeline(query, decodedCursor, dir, limit)
 
     const rows = await Shop.aggregate(pipeline)
 
@@ -65,13 +65,21 @@ export const productDiscoveryService = async ({
     let nextCursor: string | null = null
     let prevCursor: string | null = null
 
-    if (dir === 'next') {
-        nextCursor = hasMore ? encodeCursor(fromRow(last)) : null
-        prevCursor = hasIncomingCursor ? encodeCursor(fromRow(first)) : null
+    if (dir === 'next' || dir === null) {
+        // Moving forward (or first page)
+        if (hasMore) {
+            nextCursor = encodeCursor(fromRow(last))
+        }
+        if (hasIncomingCursor) {
+            prevCursor = encodeCursor(fromRow(first))
+        }
     } else {
-        // When going prev, you can always go forward again (unless at start)
+        // Moving backward
+        if (hasMore) {
+            prevCursor = encodeCursor(fromRow(first))
+        }
+        // If we had a cursor, we know there are items ahead
         nextCursor = encodeCursor(fromRow(last))
-        prevCursor = hasMore ? encodeCursor(fromRow(first)) : null
     }
 
     return {

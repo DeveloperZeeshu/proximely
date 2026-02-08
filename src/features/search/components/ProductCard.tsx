@@ -77,7 +77,7 @@ export const ProductCard = ({
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     height={500}
                     width={500}
-                    loading="lazy"
+                    priority
                 />
 
                 <span className="absolute top-2 right-2 rounded-full bg-emerald-500/90 px-2.5 py-0.5 text-[11px] font-medium text-white">

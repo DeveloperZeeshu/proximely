@@ -31,7 +31,6 @@ export const SearchForm = () => {
                 lat: String(lat),
                 lng: String(lng),
                 sort: 'distance',
-                dir: 'next'
             })
 
             router.push(`/search-page?${params.toString()}`)
@@ -65,7 +64,6 @@ export const SearchForm = () => {
                 <input
                     type="text"
                     placeholder="Search milk, soap, rice..."
-                    autoFocus
                     enterKeyHint="search"
                     className="
         flex-1

@@ -1,7 +1,6 @@
 'use client'
 
-import { useCallback, useEffect } from 'react'
-import toast from 'react-hot-toast'
+import { useEffect } from 'react'
 import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
@@ -23,6 +22,7 @@ import { FilterBar } from '@/features/search/components/FilterBar'
 import { useProductDiscovery } from '@/store/productDiscovery/useProductDiscovery'
 import { itemsDiscovery } from '@/store/productDiscovery/productDiscoveryThunk'
 import { useAppDispatch } from '@/hooks/redux-hooks'
+import { setQuery, SortType } from '@/store/productDiscovery/productDiscoverySlice'
 
 export default function SearchPage() {
     const router = useRouter()
@@ -61,42 +61,46 @@ export default function SearchPage() {
 
     /* ---------------- Fetch Logic ---------------- */
 
-    const fetchProducts = useCallback(() => {
-        const name = searchParams.get('name') || ''
-        const radius = Number(searchParams.get('radius') || 10000)
-        const sort = searchParams.get('sort') || 'distance'
+    useEffect(() => {
+        const name = searchParams.get('name') ?? ''
+        const radius = Number(searchParams.get('radius') ?? 10000)
+        const rawSort = searchParams.get('sort')
         const lat = Number(searchParams.get('lat'))
         const lng = Number(searchParams.get('lng'))
         const cursor = searchParams.get('cursor')
-        const dir = (searchParams.get('dir') as 'next' | 'prev') || 'next'
+        const dir = searchParams.get('dir') as 'next' | 'prev' | null
+        const limit = Number(searchParams.get('limit') ?? 10)
 
-        if (!lat || !lng) {
-            toast.error('Location data missing')
-            return
-        }
+        const sort: SortType =
+            rawSort === 'distance' ||
+                rawSort === 'price_asc' ||
+                rawSort === 'price_desc'
+                ? rawSort
+                : 'distance'
 
-        dispatch(
-            itemsDiscovery({
-                query: {
-                    search: name,
-                    radius,
-                    location: {
-                        latitude: lat,
-                        longitude: lng
-                    }
-                },
+        dispatch(setQuery({
+            query: {
+                search: name,
+                radius,
                 sort,
-                cursor: {
-                    value: cursor,
-                    dir
+                location: {
+                    latitude: lat,
+                    longitude: lng
                 }
-            })
-        )
-    }, [searchParams, dispatch])
+            },
+            pagination: {
+                limit,
+                dir: cursor ? dir : null,
+                activeCursor: cursor,
+                cursor: {
+                    prev: null,
+                    next: null
+                }
+            }
+        }))
 
-    useEffect(() => {
-        fetchProducts()
-    }, [fetchProducts])
+        dispatch(itemsDiscovery())
+    }, [searchParams, dispatch])
 
     /* ---------------- States ---------------- */
 
@@ -121,6 +125,8 @@ export default function SearchPage() {
                         alt="No products found"
                         width={300}
                         height={300}
+                        className='w-50 h-auto'
+                        priority
                     />
                     <p className="text-xl font-semibold mt-4 mb-6 text-center">
                         No products found nearby

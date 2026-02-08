@@ -2,6 +2,7 @@ import { useAppContext } from "@/context/AppContext"
 import { ProductType } from "@/types/product.types"
 import { Pencil, Trash } from "lucide-react"
 import { useDeleteProduct } from "@/hooks/products/useDeleteProduct"
+import Image from "next/image"
 
 interface ProductListPropType {
     product: ProductType
@@ -18,11 +19,15 @@ const ProductListCard = ({ product }: ProductListPropType) => {
         >
             {/* Image */}
             <td className="px-4 py-2">
-                <img
-                    src={`https://placehold.co/80x80?text=${product.name}`}
-                    alt={product.name}
-                    className="h-12 w-12 rounded object-cover"
-                />
+                <div className="relative h-12 w-12">
+                    <Image
+                        src={product.imageUrl || "/images/product-placeholder.jpg"}
+                        alt={product.name}
+                        fill
+                        sizes="48px"
+                        className="rounded object-cover"
+                    />
+                </div>
             </td>
 
             {/* Name & Description */}

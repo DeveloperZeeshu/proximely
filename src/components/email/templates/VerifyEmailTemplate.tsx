@@ -105,7 +105,7 @@ export function VerifyEmailTemplate({
           <Section style={styles.card}>
             {/* Header */}
             <Heading style={styles.logo}>
-              Radius Buy
+              Proximely
             </Heading>
 
             <Heading style={styles.heading}>
@@ -117,7 +117,7 @@ export function VerifyEmailTemplate({
             </Text>
 
             <Text style={styles.text}>
-              Thanks for signing up for <strong>Radius Buy</strong>.
+              Thanks for signing up for <strong>Proximely</strong>.
               Please confirm your email address to activate your account
               and access your dashboard.
             </Text>
@@ -140,7 +140,7 @@ export function VerifyEmailTemplate({
             </Text>
 
             <Text style={styles.footer}>
-              © {new Date().getFullYear()} Radius Buy
+              © {new Date().getFullYear()} Proximely
             </Text>
           </Section>
         </Container>

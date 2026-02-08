@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Proximely 🛍️
 
-## Getting Started
+A full-stack, location-based platform that helps users find nearby shops selling the products they search for — complete with prices, distance, and Google Maps navigation. Built with the **MERN / Next.js stack**, Proximely delivers an intuitive experience for both customers and shop owners, now with **email verification, Google OAuth, and scalable pagination**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🧑‍💼 For Users
+- 🔍 Search for products by name or category.
+- 📍 Discover nearby shops using real-time GPS coordinates.
+- 💰 Compare prices across local shops.
+- 📌 View shop details: price, distance, availability, and map directions.
+- 🗺️ Get redirected to shop location via Google Maps.
+- ⚡ Cursor-based **pagination** for faster, scalable search results.
+- 🔐 **Optional Google OAuth** login and **email verification** for secure accounts.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🏪 For Shop Owners
+- 📝 Register and manage shop profiles.
+- 📦 Add, update, or deactivate product listings.
+- 📊 Access a **personalized shop dashboard** with stats (total products, in-stock, out-of-stock).
+- 🔐 Secure login with JWT and email verification.
+- 🛠️ Real-time product management for nearby buyers.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠️ Tech Stack
+- **Frontend**: Next.js, React, Tailwind CSS, React Hook Form
+- **Backend**: Node.js, Next.js API routes, Mongoose (MongoDB)
+- **Authentication & Security**: JWT, Google OAuth, Email Verification, Argon2
+- **Database**: MongoDB
+- **State Management**: Redux Toolkit
+- **Others**: Google Maps API, Cursor-based pagination
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔐 Authentication & Security
+- Passwords hashed using **argon2**
+- JSON Web Token (**JWT**) + optional session-based authentication
+- Email verification for account activation
+- Google OAuth integration for login
+- Protected routes for shop dashboards and management
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🧭 How It Works
+1. **User searches** for a product by name or category.
+2. **Backend fetches nearby shops** using location data in MongoDB.
+3. **Products are filtered** by shop proximity, availability, and optionally sorted by distance or price.
+4. **Cursor-based pagination** ensures smooth and scalable browsing of results.
+5. **Shops are displayed** with product details, price, distance, and Google Maps links.
+6. **Shop owners manage products** via secure, real-time dashboards.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🙋‍♂️ Author
+Made with ❤️ by **Jeesan Abbas**

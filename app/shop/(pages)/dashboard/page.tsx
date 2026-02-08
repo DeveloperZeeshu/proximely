@@ -7,16 +7,47 @@ import Link from "next/link";
 import { ShopInfoCard } from "@/features/shop/components/ShopInfoCard";
 import { StatCard } from "@/features/products/components/StatCard";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { useProducts } from "@/store/products/useProducts";
 import { useShop } from "@/store/shop/useShop";
 import { AccountGate } from "../../AccountGate";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { handleAxiosError } from "@/apis/utils/handleAxiosError";
+import { fetchProductStats } from "@/apis/product.api";
+
+type StatsType = {
+    totalInStock: number
+    totalOutOfStock: number
+    totalProducts: number
+}
 
 export default function ShopDashboard() {
-
-    const { openProductForm } = useAppContext()
+    const [stats, setStats] = useState<StatsType>({
+        totalInStock: 0,
+        totalOutOfStock: 0,
+        totalProducts: 0
+    })
 
     const { shop } = useShop()
-    const { products } = useProducts()
+    const { openProductForm } = useAppContext()
+
+    const fetchedRef = useRef(false)
+
+    const getStats = useCallback(async () => {
+        if (!shop?._id || fetchedRef.current) return
+
+        fetchedRef.current = true
+
+        try {
+            const result = await fetchProductStats()
+            setStats(result.stats)
+        } catch (err: unknown) {
+            handleAxiosError(err)
+            fetchedRef.current = false
+        }
+    }, [shop?._id])
+
+    useEffect(() => {
+        getStats()
+    }, [getStats])
 
     return (
         <Container>
@@ -36,9 +67,9 @@ export default function ShopDashboard() {
                     {/* STAT CARDS */}
                     {
                         <StatCard
-                            totalProducts={products.length}
-                            totalInStock={products.reduce((acc, p) => acc += p.isAvailable ? 1 : 0, 0)}
-                            totalOutofStock={products.reduce((acc, p) => acc += !p.isAvailable ? 1 : 0, 0)}
+                            totalProducts={stats.totalProducts}
+                            totalInStock={stats.totalInStock}
+                            totalOutofStock={stats.totalOutOfStock}
                         />
                     }
 

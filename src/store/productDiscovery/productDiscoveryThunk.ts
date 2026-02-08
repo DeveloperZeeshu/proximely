@@ -1,21 +1,7 @@
 import { productDiscovery } from "@/apis/productDiscovery.api";
 import { SearchedProductType } from "@/features/search/components/ProductCard";
-import { LatLng } from "@/types/search.types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
-type ProductDiscoveryArgs = {
-    query: {
-        search: string
-        location: LatLng
-        radius: number
-    },
-    cursor?: {
-        value: string | null
-        dir: 'next' | 'prev'
-    }
-    sort: string
-    limit?: number
-}
+import { RootState } from "../store";
 
 export type ProductDiscoveryResponse = {
     items: SearchedProductType[]
@@ -27,17 +13,34 @@ export type ProductDiscoveryResponse = {
 
 export const itemsDiscovery = createAsyncThunk<
     ProductDiscoveryResponse,
-    ProductDiscoveryArgs
+    void,
+    { state: RootState }
 >(
     'productDiscovery/search',
-    async ({ query, cursor, limit, sort }) => {
+    async (_, { getState }) => {
+        const { query, pagination } = getState().product_discovery
+
+        const { search, location, radius, sort } = query
+
+        if (!search || !location || !radius || !sort) {
+            return {
+                items: [],
+                cursor: { prev: null, next: null }
+            }
+        }
+
         const res = await productDiscovery({
-            query,
-            sort,
-            cursor: cursor?.value,
-            dir: cursor?.dir,
-            limit
+            query: {
+                search,
+                radius,
+                sort,
+                location,
+            },
+            cursor: pagination.activeCursor,
+            dir: pagination.dir,
+            limit: pagination.limit
         })
+
         return {
             items: res.products,
             cursor: res.cursor

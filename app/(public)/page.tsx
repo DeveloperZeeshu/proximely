@@ -126,7 +126,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {items.map((item) => (
+            {items.map((item, i) => (
               <article
                 key={item.name}
                 className="
@@ -139,6 +139,7 @@ export default function Home() {
                     src={item.img}
                     alt={item.name}
                     fill
+                    priority={i === 0}
                     sizes="(min-width:1024px) 25vw, (min-width:640px) 33vw, 50vw"
                     className="object-cover"
                   />

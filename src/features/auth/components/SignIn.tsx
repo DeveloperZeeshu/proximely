@@ -12,7 +12,6 @@ import { handleAxiosError } from '@/apis/utils/handleAxiosError'
 import toast from 'react-hot-toast'
 import { LoginFormData, loginSchema } from '../schemas/login.schema'
 import { useRouter } from 'next/navigation'
-import { useAppDispatch } from '@/hooks/redux-hooks'
 import { Button, LoadingButton } from '@/components/ui/button'
 
 export default function SignIn() {
@@ -33,11 +32,11 @@ export default function SignIn() {
     const submit: SubmitHandler<LoginFormData> = async (data) => {
         setLoading(true)
         try {
-            const result = await loginUser(data)
+            await loginUser(data)
 
             toast.success('Logged in successfully')
 
-            router.push('/shop/dashboard')
+            window.location.href = '/shop/dashboard'
 
             reset()
         } catch (err: unknown) {

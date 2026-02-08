@@ -43,4 +43,8 @@ export const updateProduct = async ({
 
 
 
-
+// Product Stat
+export const fetchProductStats = async () => {
+    const res = await apiClient.get('/products/stats')
+    return res.data
+}

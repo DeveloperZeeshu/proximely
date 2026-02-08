@@ -79,9 +79,6 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json({
             success: true,
             message: 'Logged in successfully.',
-            hasShop: result.hasShop,
-            roles: result.roles,
-            isEmailVerified: result.isEmailVerified
         }, { status: 200 })
 
     } catch (err: unknown) {

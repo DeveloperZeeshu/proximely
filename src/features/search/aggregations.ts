@@ -18,7 +18,7 @@ type ProductSort = {
 interface AggregationRow {
     product: {
         price: number
-        _id: any // mongoose.Types.ObjectId
+        _id: any
         [key: string]: any
     }
     distance: number
@@ -36,10 +36,16 @@ export type CursorObj = ReturnType<typeof fromRow>
 
 export const buildCursorExpr = (
     cursor: CursorObj,
-    dir: 'next' | 'prev',
+    dir: 'next' | 'prev' | null,
     sort: 'distance' | 'price_asc' | 'price_desc'
 ) => {
-    const cmp = dir === 'next' ? '$gt' : '$lt'
+    if (!dir) return null
+
+    const effectiveDir: SortDir =
+        (sort === 'distance' ? 1 : SORT_MAP[sort]) *
+        (dir === 'prev' ? -1 : 1) as SortDir
+
+    const cmp = effectiveDir === 1 ? '$gt' : '$lt'
 
     if (sort === 'distance') {
         return {
@@ -77,12 +83,11 @@ export const buildCursorExpr = (
 
 export function buildProductDiscoveryPipeline(
     query: ProductDiscoveryInput['query'],
-    sort: 'distance' | 'price_asc' | 'price_desc',
     cursor: CursorObj | null,
-    dir: 'next' | 'prev',
+    dir: 'next' | 'prev' | null,
     limit: number
 ): PipelineStage[] {
-    const { search, category, radius, location } = query
+    const { search, category, sort, radius, location } = query
     const { latitude, longitude } = location
 
     const productMatch: PipelineStage.Match['$match'] = {
@@ -98,15 +103,15 @@ export function buildProductDiscoveryPipeline(
     const MAX_DISTANCE = 50000
     const safeDistance = Math.min(radius ?? 10000, MAX_DISTANCE)
 
-    // Sort direction: forward = ascending, backward = descending
-    const sortDir: SortDir = dir === 'next' ? 1 : -1
+    const isPaging = Boolean(cursor && dir)
+    const sortDir: SortDir = dir === 'prev' ? -1 : 1
 
     let buildSort: ProductSort = {}
 
     if (sort === 'distance') {
         buildSort.distance = sortDir
     } else {
-        buildSort['product.price'] = SORT_MAP[sort]
+        buildSort['product.price'] = (SORT_MAP[sort] * sortDir) as SortDir
     }
     buildSort['product._id'] = sortDir
 
@@ -142,18 +147,22 @@ export function buildProductDiscoveryPipeline(
     ]
 
     // Apply cursor filter (must come after $unwind)
-    if (cursor) {
-        pipeline.push({
-            $match: {
-                $expr: buildCursorExpr(cursor, dir, sort),
-            },
-        })
+    if (isPaging) {
+        const cursorExpr = buildCursorExpr(cursor!, dir!, sort)
+
+        if (cursorExpr) {
+            pipeline.push({
+                $match: { $expr: cursorExpr },
+            })
+        }
     }
 
     pipeline.push(
         {
             $addFields: {
-                distanceKm: { $round: [{ $divide: ['$distance', 1000] }, 2] },
+                distanceKm: {
+                    $round: [{ $divide: ['$distance', 1000] }, 2]
+                },
             },
         },
         {
@@ -175,9 +184,7 @@ export function buildProductDiscoveryPipeline(
                 },
             },
         },
-        {
-            $sort: buildSort
-        },
+        { $sort: buildSort },
         { $limit: limit + 1 }
     )
 
