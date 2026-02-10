@@ -1,9 +1,10 @@
+import { ProductCategory } from "@/lib/constants"
 
 export interface ProductTabDetails {
     _id: string
     shopId: string
     name: string
-    category: string
+    category: ProductCategory
     description: string
     price: string
     imageUrl: string

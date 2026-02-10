@@ -1,3 +1,4 @@
+import { PRODUCT_CATEGORIES_VALUE } from "@/lib/constants";
 import z from "zod";
 
 export const addProductSchema = z.object({
@@ -7,9 +8,7 @@ export const addProductSchema = z.object({
         .max(50),
 
     category: z
-        .string()
-        .trim()
-        .max(50),
+        .enum(PRODUCT_CATEGORIES_VALUE),
 
     price: z
         .coerce

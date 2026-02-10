@@ -15,6 +15,7 @@ import { createProduct, updateProduct } from "@/apis/product.api";
 import { ProductFormInput, productFormSchema } from "../schemas/product.schema";
 import { Button, LoadingButton } from "@/components/ui/button";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { PRODUCT_CATEGORIES } from "@/lib/constants";
 
 interface ProductFormProps {
   product: ProductTabDetails | null;
@@ -41,6 +42,7 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
   });
 
   useEffect(() => {
+    console.log(product?.category)
     reset({
       name: product?.name ?? '',
       category: product?.category ?? 'groceries',
@@ -121,6 +123,7 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
                 render={({ field }) => (
                   <Select
                     value={field.value}
+                    key={field.value}
                     onValueChange={field.onChange}>
                     <SelectTrigger className="w-full lg:w-32">
                       <SelectValue placeholder="Select category" />
@@ -128,9 +131,15 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
                     <SelectContent className="z-70">
                       <SelectGroup>
                         <SelectLabel>Category</SelectLabel>
-                        <SelectItem value="groceries">Groceries</SelectItem>
-                        <SelectItem value="electronics">Electronics</SelectItem>
-                        <SelectItem value="clothing">Clothing</SelectItem>
+                        {
+                          PRODUCT_CATEGORIES.map(c => (
+                            <SelectItem
+                              key={c.value}
+                              value={c.value}>
+                              {c.label}
+                            </SelectItem>
+                          ))
+                        }
                       </SelectGroup>
                     </SelectContent>
                   </Select>

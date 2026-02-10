@@ -12,6 +12,7 @@ import { AccountGate } from "../../AccountGate";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { handleAxiosError } from "@/apis/utils/handleAxiosError";
 import { fetchProductStats } from "@/apis/product.api";
+import StorefrontStatusCard from "@/features/shop/components/StoreFrontStatusCard";
 
 type StatsType = {
     totalInStock: number
@@ -96,12 +97,14 @@ export default function ShopDashboard() {
                         </Link>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-5">
+                    <div className="flex flex-col lg:flex-row gap-3 lg:gap-5 w-full">
                         {/* SHOP INFO */}
                         <ShopInfoCard
                             shop={shop}
                         />
+                        <StorefrontStatusCard />
                     </div>
+
 
                     {/* BOTTOM PANELS */}
                     <div className="grid md:grid-cols-2 gap-3 lg:gap-5 mt-3 lg:mt-5">

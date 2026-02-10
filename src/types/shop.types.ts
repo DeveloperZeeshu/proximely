@@ -1,3 +1,4 @@
+import { ShopCategory } from "@/lib/constants"
 
 export interface UserProfile {
     ownerName: string
@@ -15,7 +16,7 @@ export interface ShopInfoType {
     shopName: string
     ownerName: string
     phone: string
-    category: string
+    category: ShopCategory
     address: string
     city: string
     state: string

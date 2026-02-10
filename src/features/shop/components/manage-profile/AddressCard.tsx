@@ -5,7 +5,7 @@ import { Actions } from "./Actions"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Pencil } from "lucide-react"
 import { useEffect, useState } from "react"
-import { Controller, SubmitHandler, useForm } from "react-hook-form"
+import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { handleAxiosError } from "@/apis/utils/handleAxiosError"
 import { UpdateShopInput, updateShopSchema } from "../../schemas/update.schema"
@@ -13,11 +13,12 @@ import { updateShop } from "@/apis/shop.api"
 import toast from "react-hot-toast"
 import { useAppDispatch } from "@/hooks/redux-hooks"
 import { editShop } from "@/store/shop/shopSlice"
+import { City, CITY_MAP, State, STATES } from "@/lib/constants"
 
 type ShopAddressType = {
   address?: string
-  city?: string
-  state?: string
+  city?: City
+  state?: State
   zipcode?: string
 }
 
@@ -44,6 +45,11 @@ export function AddressCard({ shopAddress = {}, shopId }: PropType) {
       state: shopAddress.state,
       zipcode: shopAddress.zipcode
     }
+  })
+
+  const selectedState = useWatch({
+    control,
+    name: 'state'
   })
 
   useEffect(() => {
@@ -119,59 +125,70 @@ export function AddressCard({ shopAddress = {}, shopId }: PropType) {
 
         <div className="flex gap-3 lg:gap-4">
           <div className="flex flex-col w-full">
-              <label className="text-sm">City</label>
-              <Controller
-                name="city"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    value={field.value}
-                    disabled={!toEdit}
-                    onValueChange={field.onChange}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select city" />
-                    </SelectTrigger>
-                    <SelectContent className="z-70">
-                      <SelectGroup>
-                        <SelectLabel>City</SelectLabel>
-                        <SelectItem value="jaipur">Jaipur</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-            </div>
+            <label className="text-sm">State</label>
+            <Controller
+              name="state"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  key={field.value}
+                  disabled={!toEdit}
+                  onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select state" />
+                  </SelectTrigger>
+                  <SelectContent className="z-70">
+                    <SelectGroup>
+                      <SelectLabel>State</SelectLabel>
+                      {
+                        STATES.map(s => (
+                          <SelectItem
+                            key={s.value}
+                            value={s.value}>
+                            {s.label}
+                          </SelectItem>
+                        ))
+                      }
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
 
           <div className="flex flex-col w-full">
-              <label className="text-sm">State</label>
-              <Controller
-                name="state"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    value={field.value}
-                    disabled={!toEdit}
-                    onValueChange={field.onChange}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select state" />
-                    </SelectTrigger>
-                    <SelectContent className="z-70">
-                      <SelectGroup>
-                        <SelectLabel>State</SelectLabel>
-                        <SelectItem value="rajasthan">Rajasthan</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-            </div>
-
-          {/* <Select
-            label="State"
-            options={['rajasthan']}
-            {...register('state')}
-            disabled={!toEdit}
-          /> */}
+            <label className="text-sm">City</label>
+            <Controller
+              name="city"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  key={field.value}
+                  disabled={!toEdit}
+                  onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select city" />
+                  </SelectTrigger>
+                  <SelectContent className="z-70">
+                    <SelectGroup>
+                      <SelectLabel>City</SelectLabel>
+                      {selectedState &&
+                        CITY_MAP[selectedState as State]?.map(c => (
+                          <SelectItem
+                            key={c.value}
+                            value={c.value}>
+                            {c.label}
+                          </SelectItem>
+                        ))
+                      }
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
 
           <Input
             label="Zip Code"

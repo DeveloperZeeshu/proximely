@@ -10,7 +10,7 @@ const Container = ({ children }: ContainerProps) => {
       w-full
       mx-auto
       px-3 lg:px-6
-      pt-22 pb-12
+      pt-18 pb-12
       max-w-7xl
     ">
       {children}

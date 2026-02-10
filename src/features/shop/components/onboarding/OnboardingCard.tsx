@@ -13,6 +13,7 @@ import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { setShopStatus } from "@/store/auth/authSlice"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { SHOP_CATEGORIES } from "@/lib/constants"
 
 export function OnboardingCard() {
     const {
@@ -67,31 +68,38 @@ export function OnboardingCard() {
                     {...register('phone')}
                 />
 
-                <div 
-        className="flex flex-col">
-          <label className="text-sm">Category</label>
-          <Controller
-            name="category"
-            control={control}
-            render={({ field }) => (
-              <Select
-                value={field.value}
-                onValueChange={field.onChange}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent className="z-70">
-                  <SelectGroup>
-                    <SelectLabel>Category</SelectLabel>
-                    <SelectItem value="General Store">General Store</SelectItem>
-                    <SelectItem value="Pharmacy">Pharmacy</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            )}
-          />
-        </div>
-
+                <div
+                    className="flex flex-col">
+                    <label className="text-sm">Category</label>
+                    <Controller
+                        name="category"
+                        control={control}
+                        render={({ field }) => (
+                            <Select
+                                value={field.value}
+                                key={field.value}
+                                onValueChange={field.onChange}>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select category" />
+                                </SelectTrigger>
+                                <SelectContent className="z-70">
+                                    <SelectGroup>
+                                        <SelectLabel>Category</SelectLabel>
+                                        {
+                                            SHOP_CATEGORIES.map(c => (
+                                                <SelectItem
+                                                    key={c.value}
+                                                    value={c.value}>
+                                                    {c.label}
+                                                </SelectItem>
+                                            ))
+                                        }
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        )}
+                    />
+                </div>
                 <Button
                     type="submit"
                     className="mt-3"

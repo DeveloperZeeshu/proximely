@@ -13,12 +13,13 @@ import toast from "react-hot-toast"
 import { useAppDispatch } from "@/hooks/redux-hooks"
 import { editShop } from "@/store/shop/shopSlice"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { SHOP_CATEGORIES, ShopCategory } from "@/lib/constants"
 
 type BasicInfoType = {
   shopName?: string
   phone?: string
   ownerName?: string
-  category?: string
+  category?: ShopCategory
 }
 
 type PropType = {
@@ -132,8 +133,8 @@ export function BasicInfoCard({ basicInfo = {}, shopId }: PropType) {
           {...register('phone')}
         />
 
-        <div 
-        className="flex flex-col">
+        <div
+          className="flex flex-col">
           <label className="text-sm">Category</label>
           <Controller
             name="category"
@@ -141,16 +142,24 @@ export function BasicInfoCard({ basicInfo = {}, shopId }: PropType) {
             render={({ field }) => (
               <Select
                 value={field.value}
+                key={field.value}
                 onValueChange={field.onChange}
                 disabled={!toEdit}>
-                <SelectTrigger className="">
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent className="z-70">
                   <SelectGroup>
                     <SelectLabel>Category</SelectLabel>
-                    <SelectItem value="General Store">General Store</SelectItem>
-                    <SelectItem value="Pharmacy">Pharmacy</SelectItem>
+                    {
+                      SHOP_CATEGORIES.map(c => (
+                        <SelectItem
+                          key={c.value}
+                          value={c.value}>
+                          {c.label}
+                        </SelectItem>
+                      ))
+                    }
                   </SelectGroup>
                 </SelectContent>
               </Select>

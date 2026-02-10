@@ -95,16 +95,16 @@ export default function PublicHeader() {
                     {authLoading && <HeaderAuthSkeleton />}
 
                     {!authLoading && !isAuth && (
-                        <div className="hidden lg:flex items-center gap-3">
+                        <div className="hidden lg:flex items-center gap-3 h-9">
                             <Link
                                 href="/auth/login"
-                                className="px-3.5 h-9 flex items-center text-sm font-medium border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100 transition"
+                                className="px-3.5 h-full flex items-center text-sm font-medium border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100 transition"
                             >
                                 Log In
                             </Link>
                             <Link
                                 href="/auth/register"
-                                className="px-3.5 h-9 flex items-center text-sm font-medium rounded-md bg-blue-500 text-white hover:bg-blue-600 transition"
+                                className="px-3.5 h-full flex items-center text-sm font-medium rounded-md bg-blue-500 text-white hover:bg-blue-600 transition"
                             >
                                 Register
                             </Link>

@@ -1,6 +1,7 @@
 
 import z from "zod";
 import { createShopSchema } from "./create.schema";
+import { CITY_VALUES, STATE_VALUES } from "@/lib/constants";
 
 export const updateShopSchema = createShopSchema.extend({
     isProfileCompleted: z.boolean(),
@@ -8,8 +9,8 @@ export const updateShopSchema = createShopSchema.extend({
     isDeleted: z.boolean(),
 
     address: z.string().trim().min(1).max(100),
-    city: z.string().trim().min(1).max(50),
-    state: z.string().trim().min(1).max(50),
+    city: z.enum(CITY_VALUES),
+    state: z.enum(STATE_VALUES),
 
     zipcode: z
         .string()

@@ -1,9 +1,10 @@
+import { PRODUCT_CATEGORIES_VALUE, ProductCategory } from "@/lib/constants"
 import mongoose, { Document, Schema } from "mongoose"
 
 export interface IProduct extends Document {
     shopId: mongoose.Types.ObjectId
     name: string
-    category: 'groceries' | 'electronics' | 'clothing'
+    category: ProductCategory
     description: string
     price: number
     currency: 'USD' | 'EUR' | 'INR'
@@ -32,7 +33,7 @@ const productSchema = new Schema<IProduct>(
         category: {
             type: String,
             required: true,
-            enum: ['groceries', 'electronics', 'clothing'],
+            enum: PRODUCT_CATEGORIES_VALUE,
             trim: true,
         },
 

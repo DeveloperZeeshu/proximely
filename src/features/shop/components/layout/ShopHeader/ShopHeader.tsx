@@ -96,11 +96,11 @@ export default function ShopHeader() {
                             <Link
                                 key={nav.name}
                                 href={nav.slug}
-                                className={`rounded-full px-3 py-1 transition-colors ${pathname.startsWith(nav.slug)
+                                className={`rounded-full px-3 py-1 transition-colors ${nav.slug.includes(pathname)
                                     ? 'bg-blue-50 text-blue-500'
                                     : 'text-gray-600 hover:bg-blue-50 hover:text-blue-500'
                                     }`}
-                                aria-current={pathname.startsWith(nav.slug) ? 'page' : undefined}
+                                aria-current={pathname.includes(nav.slug) ? 'page' : undefined}
                             >
                                 {nav.name}
                             </Link>

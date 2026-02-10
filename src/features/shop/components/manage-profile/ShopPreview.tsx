@@ -1,4 +1,4 @@
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { MapPin } from "lucide-react"
 
 type PropType = {
@@ -12,6 +12,9 @@ export function ShopPreview({
   address = '123 Main St, Suite 101, Anytown, NY 10001',
   category = 'Bookstore'
 }: PropType) {
+
+  const parsedCategory = category.split(' ').map(c => c[0].toUpperCase() + c.slice(1)).join(' ')
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden lg:max-w-110 w-full">
 
@@ -53,7 +56,7 @@ export function ShopPreview({
         {/* Tags */}
         <div className="flex items-center gap-2 mt-3">
           <span className="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-700">
-            {category}
+            {parsedCategory}
           </span>
           <span className="px-2 py-0.5 text-xs rounded-full bg-green-100 text-green-700">
             Open Now

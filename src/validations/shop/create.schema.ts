@@ -1,4 +1,5 @@
 
+import { SHOP_CATEGORIES_VALUE } from '@/lib/constants'
 import { z } from 'zod'
 
 export const createShopSchema = z.object({
@@ -10,7 +11,7 @@ export const createShopSchema = z.object({
         .trim()
         .regex(/^[0-9+\-\s]{7,15}$/),
 
-    category: z.string().trim().min(3)
+    category: z.enum(SHOP_CATEGORIES_VALUE)
 })
 .strict()
 

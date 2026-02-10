@@ -1,4 +1,5 @@
 // product.form.schema.ts
+import { PRODUCT_CATEGORIES_VALUE } from "@/lib/constants"
 import { z } from "zod"
 
 export const productFormSchema = z.object({
@@ -8,7 +9,8 @@ export const productFormSchema = z.object({
         .min(3, "Product name must be at least 3 characters long")
         .max(50),
 
-    category: z.string().trim().min(1),
+    category: z.
+        enum(PRODUCT_CATEGORIES_VALUE),
 
     price: z
         .string()

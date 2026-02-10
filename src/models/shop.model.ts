@@ -1,28 +1,14 @@
 
+import { City, CITY_VALUES, SHOP_CATEGORIES_VALUE, ShopCategory, State, STATE_VALUES, STATES } from '@/lib/constants'
 import mongoose, { Document, Schema } from 'mongoose'
 
 /* ----------------------------- Types ----------------------------- */
 
 export interface ShopLocation {
   type: 'Point'
-  coordinates: [number, number] // [lng, lat]
+  coordinates: [number, number] 
 }
 
-export type ShopCategory =
-  | 'General Store'
-  | 'Supermarket'
-  | 'Electronics'
-  | 'Pharmacy'
-  | 'Fashion & Apparel'
-  | 'Beauty & Personal Care'
-  | 'Home & Kitchen'
-  | 'Pet Supplies'
-  | 'Hardware & DIY'
-  | 'Sports & Fitness'
-  | 'Stationery'
-  | 'Bakery'
-  | 'Automotive'
-  | 'Toy Store'
 
 export type OnboardingStep =
   | 'BASIC_INFO'
@@ -42,8 +28,8 @@ export interface IShop extends Document {
 
   /* ADDRESS */
   address?: string
-  city?: string
-  state?: string
+  city?: City
+  state?: State
   zipcode?: string
 
   /* LOCATION */
@@ -95,22 +81,7 @@ const shopSchema = new Schema<IShop>(
 
     category: {
       type: String,
-      enum: [
-        'General Store',
-        'Supermarket',
-        'Electronics',
-        'Pharmacy',
-        'Fashion & Apparel',
-        'Beauty & Personal Care',
-        'Home & Kitchen',
-        'Pet Supplies',
-        'Hardware & DIY',
-        'Sports & Fitness',
-        'Stationery',
-        'Bakery',
-        'Automotive',
-        'Toy Store'
-      ],
+      enum: SHOP_CATEGORIES_VALUE,
       index: true
     },
 
@@ -123,14 +94,12 @@ const shopSchema = new Schema<IShop>(
 
     city: {
       type: String,
-      trim: true,
-      lowercase: true
+      enum: CITY_VALUES
     },
 
     state: {
       type: String,
-      trim: true,
-      lowercase: true
+      enum: STATE_VALUES
     },
 
     zipcode: {

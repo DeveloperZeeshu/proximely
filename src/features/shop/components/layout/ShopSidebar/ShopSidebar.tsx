@@ -89,7 +89,7 @@ export default function ShopSidebar() {
                     <nav className="flex flex-col w-full space-y-1 text-sm">
                         {
                             navItems.map((nav) => {
-                                const active = pathname === nav.slug
+                                const active = nav.slug.includes(pathname)
                                 return (
                                     nav.active &&
                                     <Link
