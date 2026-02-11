@@ -16,7 +16,7 @@ export interface ProductType {
     shopId: string
     name: string
     slug: string
-    category: string
+    category: ProductCategory
     description: string
     price: string
     currency: string
