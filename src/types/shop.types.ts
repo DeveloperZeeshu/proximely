@@ -1,4 +1,4 @@
-import { ShopCategory } from "@/lib/constants"
+import { City, ShopCategory, State } from "@/lib/constants"
 
 export interface UserProfile {
     ownerName: string
@@ -18,8 +18,8 @@ export interface ShopInfoType {
     phone: string
     category: ShopCategory
     address: string
-    city: string
-    state: string
+    city: City
+    state: State
     zipcode: string
     location: ShopLocation
     imageUrl: string
