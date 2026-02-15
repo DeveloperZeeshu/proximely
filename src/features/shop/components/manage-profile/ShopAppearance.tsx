@@ -6,6 +6,7 @@ import { useState } from "react";
 
 export const ShopAppearance = () => {
     const [toEdit, setToEdit] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
 
     const cancelEdit = () => {
 
@@ -80,6 +81,7 @@ export const ShopAppearance = () => {
             {toEdit &&
                 <Actions
                     toggleEdit={cancelEdit}
+                    loading={loading}
                 />}
         </div>
     );

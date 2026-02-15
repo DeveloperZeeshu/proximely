@@ -1,30 +1,6 @@
 const ProductsSkeleton = () => {
     return (
         <div className="min-h-screen animate-pulse">
-            {/* HEADER */}
-            <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                    <div className="h-8 w-56 bg-gray-200 rounded mb-3" />
-                    <div className="h-4 w-64 lg:w-72 bg-gray-200 rounded" />
-                </div>
-            </div>
-
-            {/* TOOLBAR */}
-            <div className="flex flex-col md:flex-row items-center gap-3 w-full mb-6">
-                {/* Search */}
-                <div className="relative w-full flex-1">
-                    <div className="h-9.5 w-full rounded-lg bg-gray-200" />
-                </div>
-
-                {/* Filter + Sort */}
-                <div className="flex gap-3 w-full md:w-auto">
-                    <div className="h-9.5 w-full md:w-24 rounded-lg bg-gray-200" />
-                    <div className="h-9.5 w-full md:w-32 rounded-lg bg-gray-200" />
-                </div>
-
-                {/* Add button */}
-                <div className="h-9.5 w-full md:w-32 rounded-lg bg-gray-200" />
-            </div>
 
             {/* DESKTOP TABLE */}
             <DesktopProductCardSkeleton />

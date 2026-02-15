@@ -1,19 +1,21 @@
+import { InventorySortType } from "@/store/inventory/inventorySlice"
 import { ProductFormInput } from "../features/products/schemas/product.schema"
 import { UpdateProductInput } from "../features/products/schemas/update.schema"
-import { LatLng } from "../types/search.types"
 import apiClient from "./utils/apiClient"
 
 // Fetch all products
 export const getProducts = async ({
+    search,
+    sort,
     cursor,
-    limit,
-    dir
+    limit
 }: {
-    cursor?: string | null
+    search?: string
+    sort?: InventorySortType
+    cursor: string | null
     limit: number
-    dir: string
 }) => {
-    const res = await apiClient.get(`/products?cursor=${cursor}&limit=${limit}&dir=${dir}`)
+    const res = await apiClient.get(`/shop/inventory?search=${search}&sort=${sort}&cursor=${cursor}&limit=${limit}`)
     return res.data
 }
 
@@ -24,7 +26,7 @@ export const createProduct = async ({
 }: {
     payload: ProductFormInput
 }) => {
-    const res = await apiClient.post('/products', payload)
+    const res = await apiClient.post('/shop/inventory', payload)
     return res.data
 }
 
@@ -37,7 +39,7 @@ export const updateProduct = async ({
     productId: string
     payload: UpdateProductInput
 }) => {
-    const res = await apiClient.patch(`/products/${productId}`, payload)
+    const res = await apiClient.patch(`/shop/inventory/${productId}`, payload)
     return res.data
 }
 
@@ -45,6 +47,6 @@ export const updateProduct = async ({
 
 // Product Stat
 export const fetchProductStats = async () => {
-    const res = await apiClient.get('/products/stats')
+    const res = await apiClient.get('/shop/inventory/stats')
     return res.data
 }

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getCurrentLocation } from "@/utils/getCurrentLocation";
 import { Search } from "lucide-react";
+import { handleAxiosError } from "@/apis/utils/handleAxiosError";
 
 export const SearchForm = () => {
     const [loading, setLoading] = useState<boolean>(false)
@@ -33,9 +34,9 @@ export const SearchForm = () => {
                 sort: 'distance',
             })
 
-            router.push(`/search-page?${params.toString()}`)
+            router.push(`/products?${params.toString()}`)
         } catch (err: unknown) {
-            console.log(err)
+            handleAxiosError(err)
         } finally {
             setLoading(false)
         }
@@ -80,7 +81,7 @@ export const SearchForm = () => {
                 {/* Button */}
                 <button
                     type="submit"
-                    disabled={!watch("name")}
+                    disabled={!watch("name") || loading}
                     className="
         h-9
         px-4
@@ -94,7 +95,11 @@ export const SearchForm = () => {
         transition
       "
                 >
-                    Search
+                    {loading ?
+                        <div className="w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+                        :
+                        <span>Search</span>
+                    }
                 </button>
             </div>
         </form>

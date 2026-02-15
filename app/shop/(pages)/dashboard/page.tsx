@@ -11,7 +11,7 @@ import { useShop } from "@/store/shop/useShop";
 import { AccountGate } from "../../AccountGate";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { handleAxiosError } from "@/apis/utils/handleAxiosError";
-import { fetchProductStats } from "@/apis/product.api";
+import { fetchProductStats } from "@/apis/inventory.api";
 import StorefrontStatusCard from "@/features/shop/components/StoreFrontStatusCard";
 
 type StatsType = {
@@ -26,6 +26,7 @@ export default function ShopDashboard() {
         totalOutOfStock: 0,
         totalProducts: 0
     })
+    const [loading, setLoading] = useState<boolean>(false)
 
     const { shop } = useShop()
     const { openProductForm } = useAppContext()
@@ -35,6 +36,7 @@ export default function ShopDashboard() {
     const getStats = useCallback(async () => {
         if (!shop?._id || fetchedRef.current) return
 
+        setLoading(true)
         fetchedRef.current = true
 
         try {
@@ -43,6 +45,8 @@ export default function ShopDashboard() {
         } catch (err: unknown) {
             handleAxiosError(err)
             fetchedRef.current = false
+        } finally {
+            setLoading(false)
         }
     }, [shop?._id])
 
@@ -71,6 +75,7 @@ export default function ShopDashboard() {
                             totalProducts={stats.totalProducts}
                             totalInStock={stats.totalInStock}
                             totalOutofStock={stats.totalOutOfStock}
+                            loading={loading}
                         />
                     }
 

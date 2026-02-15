@@ -40,9 +40,7 @@ export const productDiscoverySchema = z.object({
         .min(10)
         .nullable()
         .optional(),
-    dir: z
-        .enum(['next', 'prev'])
-        .nullable(),
+        
     limit: z
         .number()
         .min(1)

@@ -30,7 +30,7 @@ export default function ShopHeader() {
         },
         {
             name: 'Manage Products',
-            slug: "/shop/manage-products?cursor=&limit=10&dir=next",
+            slug: "/shop/manage-products?sort=newest",
             active: true
         },
         {

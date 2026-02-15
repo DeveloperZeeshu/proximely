@@ -24,12 +24,8 @@ type QueryType = {
 
 type PaginationType = {
     limit: number
-    dir: 'next' | 'prev' | null
-    activeCursor: string | null
-    cursor: {
-        prev: string | null
-        next: string | null
-    }
+    nextCursor: string | null
+    hasMore: boolean
 }
 
 type PayloadType = {
@@ -41,31 +37,32 @@ type ProductDiscoveryState = {
     items: SearchedProductType[]
     query: QueryType
     pagination: PaginationType
-    productDiscoveryStatus: ProductDiscoveryStatus
-    hydrated: boolean
-    error: string | null
+    ui: {
+        productDiscoveryStatus: ProductDiscoveryStatus
+        error: string | null
+    }
 }
 
 const initialState: ProductDiscoveryState = {
     items: [],
+
     query: {
         search: '',
         location: null,
         radius: null,
         sort: 'distance'
     },
+
     pagination: {
         limit: 10,
-        dir: null,
-        activeCursor: null,
-        cursor: {
-            prev: null,
-            next: null
-        }
+        nextCursor: null,
+        hasMore: false
     },
-    productDiscoveryStatus: 'loading',
-    hydrated: false,
-    error: null
+
+    ui: {
+        productDiscoveryStatus: 'loading',
+        error: null
+    }
 }
 
 const productDiscoverySlice = createSlice({
@@ -77,31 +74,35 @@ const productDiscoverySlice = createSlice({
             state.query = action.payload.query
             state.pagination = action.payload.pagination
             state.items = []
-            state.productDiscoveryStatus = 'loading'
+            state.ui.productDiscoveryStatus = 'loading'
         }
     },
 
     extraReducers: (builder) => {
         builder
             .addCase(itemsDiscovery.pending, (state) => {
-                state.productDiscoveryStatus = 'loading'
-                state.error = null
-                state.hydrated = false
+                state.ui.productDiscoveryStatus = 'loading'
+                state.ui.error = null
             })
 
             .addCase(itemsDiscovery.fulfilled, (state, action: PayloadAction<ProductDiscoveryResponse>) => {
-                state.items = action.payload.items
-                state.pagination.cursor = action.payload.cursor
-                state.productDiscoveryStatus = 'success'
-                state.hydrated = true
+                state.ui.productDiscoveryStatus = 'success'
+
+                if (!state.pagination.nextCursor) {
+                    state.items = action.payload.items
+                } else {
+                    const existingIds = new Set(state.items.map(i => i.product._id))
+                    const uniqueNewItems = action.payload.items.filter(i => !existingIds.has(i.product._id))
+                    state.items = [...state.items, ...uniqueNewItems]
+                }
+
+                state.pagination.nextCursor = action.payload.nextCursor
+                state.pagination.hasMore = action.payload.nextCursor !== null
             })
 
             .addCase(itemsDiscovery.rejected, (state, action) => {
-                state.items = []
-                state.productDiscoveryStatus = 'failed'
-                state.error = action.error.message ?? 'Error searching product.'
-                state.hydrated = true
-                state.pagination.cursor = { prev: null, next: null }
+                state.ui.productDiscoveryStatus = 'failed'
+                state.ui.error = action.error.message ?? 'Error searching product.'
             })
     }
 })
@@ -112,28 +113,19 @@ export const selectProductDiscoveryItems = (state: { product_discovery: ProductD
     state.product_discovery.items
 
 export const selectProductDiscoveryError = (state: { product_discovery: ProductDiscoveryState }) =>
-    state.product_discovery.error
-
-export const selectProductDiscoveryHydrated = (state: { product_discovery: ProductDiscoveryState }) =>
-    state.product_discovery.hydrated
+    state.product_discovery.ui.error
 
 export const selectProductDiscoveryLoading = (state: { product_discovery: ProductDiscoveryState }) =>
-    state.product_discovery.productDiscoveryStatus === 'loading'
+    state.product_discovery.ui.productDiscoveryStatus === 'loading'
 
 export const selectProductDiscoverySuccess = (state: { product_discovery: ProductDiscoveryState }) =>
-    state.product_discovery.productDiscoveryStatus === 'success'
-
-export const selectProductDiscoveryPrevCursor = (state: { product_discovery: ProductDiscoveryState }) =>
-    state.product_discovery?.pagination.cursor?.prev
+    state.product_discovery.ui.productDiscoveryStatus === 'success'
 
 export const selectProductDiscoveryNextCursor = (state: { product_discovery: ProductDiscoveryState }) =>
-    state.product_discovery?.pagination.cursor?.next
+    state.product_discovery?.pagination.nextCursor
 
-export const selectProductDiscoveryHasNext = (state: { product_discovery: ProductDiscoveryState }) =>
-    Boolean(state.product_discovery?.pagination.cursor?.next)
-
-export const selectProductDiscoveryHasPrev = (state: { product_discovery: ProductDiscoveryState }) =>
-    Boolean(state.product_discovery?.pagination.cursor?.prev)
+export const selectProductDiscoveryHasMore = (state: { product_discovery: ProductDiscoveryState }) =>
+    state.product_discovery.pagination.hasMore
 
 
 export const { setQuery } = productDiscoverySlice.actions

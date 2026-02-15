@@ -1,8 +1,8 @@
 import logger from "core/logger";
-import { logoutService } from "@/features/auth/service";
 import { AuthPayload, requireAuth } from "@/lib/auth/requireAuth";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { logoutService } from "@/features/auth/services/logout.service";
 
 export const POST = async (req: NextRequest) => {
     try {

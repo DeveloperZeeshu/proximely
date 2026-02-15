@@ -3,12 +3,15 @@ import { ProductType } from "@/types/product.types"
 import { Pencil, Trash } from "lucide-react"
 import { useDeleteProduct } from "@/hooks/products/useDeleteProduct"
 import Image from "next/image"
+import { useState } from "react"
+import ConfirmDialog from "@/components/ConfirmDialog"
 
 interface ProductListPropType {
     product: ProductType
 }
 
 const ProductListCard = ({ product }: ProductListPropType) => {
+    const [open, setOpen] = useState<boolean>(false)
 
     const { openEditProductForm } = useAppContext()
 
@@ -76,12 +79,20 @@ const ProductListCard = ({ product }: ProductListPropType) => {
                     </button>
 
                     <button
-                        onClick={() => mutate(product._id)}
+                        onClick={() => setOpen(true)}
                         className="h-8 w-8 flex items-center justify-center rounded-md border border-gray-300
                        text-red-600 hover:bg-red-50 transition"
                     >
                         <Trash size={16} />
                     </button>
+
+                    <ConfirmDialog
+                        open={open}
+                        title="Delete item?"
+                        description="You can't undo this action."
+                        onConfirm={() => mutate(product._id)}
+                        onCancel={() => setOpen(false)}
+                    />
                 </div>
             </td>
         </tr>

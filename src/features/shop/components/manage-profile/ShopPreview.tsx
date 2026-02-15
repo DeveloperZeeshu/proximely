@@ -10,10 +10,14 @@ type PropType = {
 export function ShopPreview({
   name = 'Main Street Books',
   address = '123 Main St, Suite 101, Anytown, NY 10001',
-  category = 'Bookstore'
+  category = 'Book Store'
 }: PropType) {
 
-  const parsedCategory = category.split(' ').map(c => c[0].toUpperCase() + c.slice(1)).join(' ')
+  const parsedCategory = (category ?? '')
+    .split(' ')
+    .filter(Boolean)
+    .map(c => c[0].toUpperCase() + c.slice(1).toLowerCase())
+    .join(' ')
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden lg:max-w-110 w-full">

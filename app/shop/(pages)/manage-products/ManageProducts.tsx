@@ -3,119 +3,63 @@
 import ProductsSkeleton from "@/features/products/components/ProductsSkeleton";
 import ProductListCard from "@/features/products/components/ProductListCard";
 import Container from "@/components/container/Container";
-import { useAppDispatch } from "@/hooks/redux-hooks";
 import { ShopProductCard } from "@/features/products/components/ShopProductCard";
-import { fetchAllProducts } from "@/store/products/productsThunks";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Pagination, PaginationEllipsis, PaginationNext, PaginationPageNumber, PaginationPrevious } from "@/components/ui/pagination";
-import { ProductsHeader } from "@/features/products/components/ProductsHeader";
-import { useEffect } from "react";
-import { Menu } from "lucide-react";
-import { useAppContext } from "@/context/AppContext";
+import { InventoryForm } from "@/features/products/components/InventoryForm";
+import { PackageOpen } from "lucide-react";
 import { useAuth } from "@/store/auth/useAuth";
-import { useProducts } from "@/store/products/useProducts";
+import { useInventory } from "@/store/inventory/useInventory";
 import { AccountGate } from "../../AccountGate";
+import { cn } from "lib/utils";
+import { useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useAppDispatch } from "@/hooks/redux-hooks";
+import { fetchShopProducts } from "@/store/inventory/inventoryThunks";
+import { InventorySortType, setFilters } from "@/store/inventory/inventorySlice";
 
 export default function ManageProducts() {
 
-    const dispatch = useAppDispatch()
-    const router = useRouter()
     const pathname = usePathname()
+    const dispatch = useAppDispatch()
     const searchParams = useSearchParams()
 
-    const { openProductForm } = useAppContext()
-
     const {
-        products,
-        hasNext,
-        hasPrev,
-        nextCursor,
-        prevCursor,
-        productsLoading
-    } = useProducts()
+        items,
+        hasMore,
+        inventoryLoading,
+        nextCursor
+    } = useInventory()
 
     const { hasShop, authLoading } = useAuth()
 
-    // Query params
-    const page = Number(searchParams.get('page') ?? 1)
-    const cursor = searchParams.get('cursor')
-    const limit = Number(searchParams.get('limit') ?? 10)
-    const dirParam = searchParams.get('dir')
-
-    const dir: 'next' | 'prev' =
-        dirParam === 'prev' ? 'prev' : 'next'
-
-
     useEffect(() => {
-        if (!authLoading && hasShop) {
-            dispatch(fetchAllProducts({
-                cursor,
-                limit,
-                dir: dir ?? 'next'
-            }))
-        }
-    }, [cursor, dir, limit, hasShop, dispatch])
+        if (authLoading || !hasShop) return
 
+        const search = searchParams.get('search')
+        const rawSort = searchParams.get('sort')
 
-    // Pagination logic
-    const handlePrevious = () => {
-        if (!hasPrev || !prevCursor) return
+        const sort: InventorySortType =
+            rawSort === 'name_asc' ||
+                rawSort === 'name_desc' ||
+                rawSort === 'newest' ||
+                rawSort === 'oldest' ||
+                rawSort === 'price_asc' ||
+                rawSort === 'price_desc'
+                ? rawSort
+                : 'newest'
 
-        router.replace(
-            `${pathname}?page=${page - 1}&cursor=${prevCursor}&limit=${limit}&dir=prev`
-        )
-    }
+        dispatch(setFilters({
+            search: search ? search : '',
+            sort
+        }))
 
-    const handleNext = () => {
-        if (!hasNext || !nextCursor) return
+        dispatch(fetchShopProducts())
 
-        router.replace(
-            `${pathname}?page=${page + 1}&cursor=${nextCursor}&limit=${limit}&dir=next`
-        )
-    }
+    }, [pathname, searchParams, hasShop])
 
-    if (hasShop && productsLoading)
-        return (
-            <Container>
-                <ProductsSkeleton />
-            </Container>
-        )
+    const handleLoadMore = () => {
+        if (!hasShop || authLoading || !nextCursor) return
 
-    if (hasShop && !productsLoading && products.length === 0) {
-        return (
-            <Container>
-                {/* Header Section */}
-                <div className="mb-12 text-center">
-                    <h1 className="text-2xl font-semibold text-slate-900">
-                        Manage Your Products
-                    </h1>
-                    <p className="text-sm text-slate-500 mt-2 max-w-xl mx-auto">
-                        You haven’t added any products yet. Start adding products to manage your inventory, update stock, and grow your store.
-                    </p>
-                </div>
-
-                {/* Empty State Card */}
-                <div className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-xl p-12 bg-slate-50 space-y-4">
-                    {/* Icon / Illustration */}
-                    <Menu className="text-gray-400" size={40} />
-
-                    {/* Message */}
-                    <h2 className="text-xl font-semibold text-slate-800">
-                        No Products Found
-                    </h2>
-                    <p className="text-sm text-slate-500 text-center max-w-xs">
-                        It looks like you haven’t added any products yet. You can add products to start managing your store.
-                    </p>
-
-                    {/* Call-to-action Button */}
-                    <button
-                        onClick={openProductForm}
-                        className="mt-4 px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md shadow-sm transition text-sm">
-                        Add New Product
-                    </button>
-                </div>
-            </Container>
-        )
+        dispatch(fetchShopProducts())
     }
 
     return (
@@ -130,56 +74,92 @@ export default function ManageProducts() {
                         </p>
                     </div>
 
-                    <ProductsHeader />
+                    <InventoryForm />
 
                     {/* RESPONSIVE PRODUCT LIST */}
-                    <div className="flex flex-col gap-2">
-                        <div className="hidden md:block overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
-                            <table className="w-full text-sm">
-                                <thead className="bg-gray-50 border-b border-gray-200">
-                                    <tr className="text-left text-xs font-medium text-gray-500 uppercase">
-                                        <th className="px-4 py-3">Image</th>
-                                        <th className="px-4 py-3">Name</th>
-                                        <th className="px-4 py-3">Price</th>
-                                        <th className="px-4 py-3">Stock</th>
-                                        <th className="px-4 py-3">Status</th>
-                                        <th className="px-4 py-3 text-right">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {products.map((product) => (
-                                        <ProductListCard
-                                            key={product._id}
-                                            product={product}
-                                        />
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                    {(hasShop && inventoryLoading && items.length === 0) &&
+                        <ProductsSkeleton />
+                    }
 
-                        {/* Mobile cards */}
-                        <div className="md:hidden space-y-3">
-                            {products.map((p) => (
-                                <ShopProductCard
-                                    key={p._id}
-                                    product={p}
-                                />
-                            ))}
+                    {/* Products found */}
+                    {(hasShop && items.length > 0) &&
+                        (<div className="flex flex-col gap-2">
+                            <div className="hidden md:block overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
+                                <table className="w-full text-sm">
+                                    <thead className="bg-gray-50 border-b border-gray-200">
+                                        <tr className="text-left text-xs font-medium text-gray-500 uppercase">
+                                            <th className="px-4 py-3">Image</th>
+                                            <th className="px-4 py-3">Name</th>
+                                            <th className="px-4 py-3">Price</th>
+                                            <th className="px-4 py-3">Stock</th>
+                                            <th className="px-4 py-3">Status</th>
+                                            <th className="px-4 py-3 text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {items.map((item) => (
+                                            <ProductListCard
+                                                key={item._id}
+                                                product={item}
+                                            />
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Mobile cards */}
+                            <div className="md:hidden space-y-3">
+                                {items.map((p) => (
+                                    <ShopProductCard
+                                        key={p._id}
+                                        product={p}
+                                    />
+                                ))}
+                            </div>
+
+                            <div className="mx-auto">
+                                {inventoryLoading && items.length > 0 ? (
+                                    <div className="mt-4 flex justify-center">
+                                        <div className="h-5 w-5 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+                                    </div>
+                                ) : (
+                                    <button
+                                        disabled={!hasMore}
+                                        onClick={handleLoadMore}
+                                        className={cn(
+                                            "mt-4 text-sm border border-gray-300 rounded-lg py-1.5 px-4",
+                                            hasMore
+                                                ? "bg-white hover:bg-gray-50 cursor-pointer"
+                                                : "bg-gray-100 cursor-not-allowed opacity-50"
+                                        )}
+                                    >
+                                        Load More
+                                    </button>
+                                )}
+                            </div>
                         </div>
-                    </div>
+                        )}
+
+                    {/* No product found */}
+                    {(hasShop && !inventoryLoading && items.length === 0) &&
+                        <div className="flex flex-col items-center justify-center rounded-xl border border-slate-200 bg-linear-to-b bg-white px-10 py-16 text-center shadow-sm">
+
+                            {/* Icon */}
+                            <div className="flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 border border-slate-200 shadow-inner mb-5">
+                                <PackageOpen className="text-slate-400" size={38} />
+                            </div>
+
+                            {/* Heading */}
+                            <h2 className="text-xl font-semibold text-slate-800 mb-2">
+                                No products found
+                            </h2>
+
+                            {/* Description */}
+                            <p className="text-sm text-slate-500 max-w-sm leading-relaxed mb-6">
+                                We couldn’t find any products here. Try adjusting your search, or add a new product to start building your inventory.
+                            </p>
+                        </div>}
                 </div>
-                <Pagination>
-                    <PaginationPrevious
-                        onClick={handlePrevious}
-                        disabled={!hasPrev || page <= 1}
-                    />
-                    <PaginationPageNumber page={page} />
-                    {hasNext && <PaginationEllipsis />}
-                    <PaginationNext
-                        onClick={handleNext}
-                        disabled={!hasNext}
-                    />
-                </Pagination>
             </AccountGate>
         </Container>
     );

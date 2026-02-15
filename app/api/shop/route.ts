@@ -1,9 +1,10 @@
 import logger from "core/logger"
-import { CreateShopErrorType, createShopService, shopService } from "@/features/shop/service"
 import { AuthPayload, requireAuth } from "@/lib/auth/requireAuth"
 import { createShopSchema } from "@/validations/shop/create.schema"
 import { NextRequest, NextResponse } from "next/server"
 import z from "zod"
+import { CreateShopErrorType, createShopService } from "@/features/shop/services/create_shop.service"
+import { shopService } from "@/features/shop/services/shop.service"
 
 // Create Shop 
 const SHOP_ERROR_MAP: Record<CreateShopErrorType, {

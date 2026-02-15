@@ -1,85 +1,70 @@
-import { UpdateProductErrorType, updateProductService } from "@/features/products/service";
-import { AuthPayload, requireAuth } from "@/lib/auth/requireAuth";
-import { updateProductSchema } from "@/validations/products/update.schema";
-import logger from "core/logger";
-import { NextRequest, NextResponse } from "next/server";
-import z from "zod";
+import { productDetailService } from '@/features/search/services/product_detail.service';
+import logger from 'core/logger';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
-const UPDATE_PRODUCT_ERROR_MAP: Record<UpdateProductErrorType, {
+
+type ProductDetailErrorType = 'NOT_FOUND' | 'SHOP_NOT_FOUND';
+
+const PRODUCT_DETAIL_ERROR_MAP: Record<ProductDetailErrorType, {
+    status: number,
     message: string
-    status: number
 }> = {
-    UNAUTHORIZED: { message: 'Unauthorized.', status: 401 },
     NOT_FOUND: { message: 'Product not found.', status: 404 },
-    BAD_REQUEST: { message: 'Bad request.', status: 400 }
-}
+    SHOP_NOT_FOUND: { message: 'The shop for this product no longer exists.', status: 404 }
+};
 
-export const PATCH = async (
+export const GET = async (
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) => {
     try {
-        const { authPayload, success } = await requireAuth()
-        if (!success) {
-            return NextResponse.json({
-                success: false,
-                message: 'Unauthorized.'
-            }, { status: 401 })
-        }
-
         const { id: productId } = await params
+        const idSchema = z.string().min(1);
+        const parsedId = idSchema.safeParse(productId);
 
-        const untrustedData = await req.json()
-
-        const parsedData = updateProductSchema.safeParse(untrustedData)
-
-        if (parsedData.error) {
-            const error = z.treeifyError(parsedData.error)
-
+        if (!parsedId.success) {
             return NextResponse.json({
                 success: false,
-                message: 'Invalid requested data.',
-                errors: error
-            }, { status: 422 })
+                message: 'Invalid product ID.',
+            }, { status: 400 });
         }
 
-        const updates = parsedData.data
-        const {sub} = authPayload as AuthPayload
+        const result = await productDetailService({
+            productId: parsedId.data
+        });
 
-        const result = await updateProductService({
-            sub,
-            productId,
-            updates
-        })
-
+        // 3. Error Mapping
         if (!result.ok) {
-            const err = UPDATE_PRODUCT_ERROR_MAP[result.code]
-            if (!err) {
-                logger.error('Unhandled UpdateProductErrorType:', result.code)
+            const err = PRODUCT_DETAIL_ERROR_MAP[result.code as ProductDetailErrorType];
 
+            if (!err) {
+                logger.error('Unhandled ProductDetailErrorCode', result.code);
                 return NextResponse.json({
                     success: false,
                     message: 'Internal server error.'
-                }, { status: 500 })
+                }, { status: 500 });
             }
+
             return NextResponse.json({
                 success: false,
                 message: err.message
-            }, { status: err.status })
+            }, { status: err.status });
         }
 
         return NextResponse.json({
             success: true,
-            message: 'Product updated successfully.',
-            updatedProduct: result.updatedProduct
-        }, { status: 200 })
+            message: 'Product details fetched successfully.',
+            product: result.product,
+            shop: result.shop
+        }, { status: 200 });
 
     } catch (err: unknown) {
-        logger.error('Product Update Error:', err)
+        logger.error('Unhandled product detail fetch error.', err);
 
         return NextResponse.json({
             success: false,
-            message: 'Internal server error.'
-        }, { status: 500 })
+            message: 'Failed to fetch product details.'
+        }, { status: 500 });
     }
 }

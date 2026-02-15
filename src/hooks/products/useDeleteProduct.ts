@@ -1,8 +1,8 @@
-import { updateProduct } from "@/apis/product.api"
+import { updateProduct } from "@/apis/inventory.api"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useAppDispatch } from "../redux-hooks"
-import { deleteProduct } from "@/store/products/productsSlice"
+import { deleteProduct } from "@/store/inventory/inventorySlice"
 import { handleAxiosError } from "@/apis/utils/handleAxiosError"
 import { useAppContext } from "@/context/AppContext"
 
@@ -16,11 +16,6 @@ export const useDeleteProduct = () => {
 
         if (!id) {
             toast.error('Something went wrong')
-            setLoading(false)
-            return
-        }
-        const confirmRes = confirm('Are you sure you want to delete this product?')
-        if (!confirmRes) {
             setLoading(false)
             return
         }

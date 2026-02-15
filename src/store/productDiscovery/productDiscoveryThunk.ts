@@ -5,10 +5,7 @@ import { RootState } from "../store";
 
 export type ProductDiscoveryResponse = {
     items: SearchedProductType[]
-    cursor: {
-        next: string | null
-        prev: string | null
-    }
+    nextCursor: string | null
 }
 
 export const itemsDiscovery = createAsyncThunk<
@@ -25,7 +22,7 @@ export const itemsDiscovery = createAsyncThunk<
         if (!search || !location || !radius || !sort) {
             return {
                 items: [],
-                cursor: { prev: null, next: null }
+                nextCursor: null
             }
         }
 
@@ -36,14 +33,13 @@ export const itemsDiscovery = createAsyncThunk<
                 sort,
                 location,
             },
-            cursor: pagination.activeCursor,
-            dir: pagination.dir,
+            cursor: pagination.nextCursor,
             limit: pagination.limit
         })
 
         return {
-            items: res.products,
-            cursor: res.cursor
+            items: res.items,
+            nextCursor: res.nextCursor
         }
     }
 )

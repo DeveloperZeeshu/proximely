@@ -12,21 +12,26 @@ type PayloadType = {
         sort: SortType
     }
     cursor: string | null
-    dir: 'next' | 'prev' | null
     limit: number
 }
 
 export const productDiscovery = async ({
     query,
     cursor,
-    dir,
     limit
 }: PayloadType) => {
-    const res = await apiClient.post('/products/search', {
+    const res = await apiClient.post('/products', {
         query,
         cursor,
-        dir,
         limit
     })
+    return res.data
+}
+
+// Product Detail api
+export const productInDetail = async (
+    productId: string
+) => {
+    const res = await apiClient.get(`/products/${productId}`)
     return res.data
 }

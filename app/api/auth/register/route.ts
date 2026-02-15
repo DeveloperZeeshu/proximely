@@ -1,8 +1,8 @@
 import logger from "core/logger";
-import { RegisterErrorType, registerService } from "@/features/auth/service";
 import { registerSchema } from "@/validations/auth/register.schema";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
+import { RegisterErrorType, registerService } from "@/features/auth/services/register.service";
 
 const REGISTER_ERROR_MAP: Record<RegisterErrorType, {
     status: number,

@@ -1,170 +1,112 @@
 import { ProductDiscoveryInput } from "@/validations/productDiscovery/search.schema"
-import { PipelineStage } from "mongoose"
+import { PipelineStage, Types } from "mongoose"
 
 const SORT_MAP = {
-    'distance': 1,
-    'price_asc': 1,
-    'price_desc': -1
+    distance: 1,
+    price_asc: 1,
+    price_desc: -1,
 } as const
 
-type SortDir = 1 | -1
+export type SortType = keyof typeof SORT_MAP
 
-type ProductSort = {
-    'product._id'?: SortDir
-    'product.price'?: SortDir
-    distance?: SortDir
+export interface CursorObj {
+    id: string;
+    price: number;
+    distance: number;
 }
 
-interface AggregationRow {
-    product: {
-        price: number
-        _id: any
-        [key: string]: any
-    }
-    distance: number
-    distanceKm?: number
-    shop?: any
-}
+const buildCursorExpr = (cursor: CursorObj, sort: SortType, order: 1 | -1) => {
+    const op = order === 1 ? "$gt" : "$lt";
+    const cursorId = new Types.ObjectId(cursor.id);
 
-export const fromRow = (row: AggregationRow) => ({
-    price: row.product.price,
-    distance: row.distance,
-    id: row.product._id.toString(),
-})
-
-export type CursorObj = ReturnType<typeof fromRow>
-
-export const buildCursorExpr = (
-    cursor: CursorObj,
-    dir: 'next' | 'prev' | null,
-    sort: 'distance' | 'price_asc' | 'price_desc'
-) => {
-    if (!dir) return null
-
-    const effectiveDir: SortDir =
-        (sort === 'distance' ? 1 : SORT_MAP[sort]) *
-        (dir === 'prev' ? -1 : 1) as SortDir
-
-    const cmp = effectiveDir === 1 ? '$gt' : '$lt'
-
-    if (sort === 'distance') {
+    if (sort === "distance") {
         return {
             $or: [
-                { [cmp]: ['$distance', cursor.distance] },
+                { [op]: ["$distance", cursor.distance] },
                 {
                     $and: [
-                        { $eq: ['$distance', cursor.distance] },
-                        { [cmp]: [{ $toString: '$product._id' }, cursor.id] }
-                    ]
-                }
-            ]
-        }
+                        { $eq: ["$distance", cursor.distance] },
+                        { [op]: ["$product._id", cursorId] },
+                    ],
+                },
+            ],
+        };
     }
 
     return {
         $or: [
-            { [cmp]: ['$product.price', cursor.price] },
+            { [op]: ["$product.price", cursor.price] },
             {
                 $and: [
-                    { $eq: ['$product.price', cursor.price] },
-                    { [cmp]: ['$distance', cursor.distance] }
-                ]
+                    { $eq: ["$product.price", cursor.price] },
+                    { $gt: ["$distance", cursor.distance] },
+                ],
             },
             {
                 $and: [
-                    { $eq: ['$product.price', cursor.price] },
-                    { $eq: ['$distance', cursor.distance] },
-                    { [cmp]: [{ $toString: '$product._id' }, cursor.id] }
-                ]
-            }
-        ]
-    }
-}
+                    { $eq: ["$product.price", cursor.price] },
+                    { $eq: ["$distance", cursor.distance] },
+                    { [op]: ["$product._id", cursorId] },
+                ],
+            },
+        ],
+    };
+};
 
-export function buildProductDiscoveryPipeline(
-    query: ProductDiscoveryInput['query'],
+export function buildProductDiscoveryPipeline({
+    query,
+    cursor,
+    limit
+}: {
+    query: ProductDiscoveryInput["query"],
     cursor: CursorObj | null,
-    dir: 'next' | 'prev' | null,
     limit: number
-): PipelineStage[] {
-    const { search, category, sort, radius, location } = query
-    const { latitude, longitude } = location
+}): PipelineStage[] {
+    const { search, category, sort, radius, location } = query;
+    const order = SORT_MAP[sort];
 
-    const productMatch: PipelineStage.Match['$match'] = {
-        $expr: { $eq: ['$shopId', '$$shopId'] },
-        name: { $regex: search, $options: 'i' },
+    const productMatch: any = {
+        $expr: { $eq: ["$shopId", "$$shopId"] },
+        isDeleted: false,
         isAvailable: true,
-    }
+    };
 
-    if (category && category !== 'All Categories') {
-        productMatch.category = category
-    }
+    if (search) productMatch.name = { $regex: search, $options: "i" };
+    if (category && category !== "All Categories") productMatch.category = category;
 
-    const MAX_DISTANCE = 50000
-    const safeDistance = Math.min(radius ?? 10000, MAX_DISTANCE)
-
-    const isPaging = Boolean(cursor && dir)
-    const sortDir: SortDir = dir === 'prev' ? -1 : 1
-
-    let buildSort: ProductSort = {}
-
-    if (sort === 'distance') {
-        buildSort.distance = sortDir
-    } else {
-        buildSort['product.price'] = (SORT_MAP[sort] * sortDir) as SortDir
-    }
-    buildSort['product._id'] = sortDir
+    const sortConfig: Record<string, 1 | -1> = sort === "distance"
+        ? { distance: order, "product._id": order }
+        : { "product.price": order, distance: 1, "product._id": order };
 
     const pipeline: PipelineStage[] = [
         {
             $geoNear: {
-                near: { type: 'Point', coordinates: [longitude, latitude] },
-                distanceField: 'distance',
-                maxDistance: safeDistance,
+                near: { type: "Point", coordinates: [location.longitude, location.latitude] },
+                distanceField: "distance",
+                maxDistance: Math.min(radius ?? 10000, 50000),
                 spherical: true,
             },
         },
         {
             $lookup: {
-                from: 'products',
-                let: { shopId: '$_id' },
+                from: "products",
+                let: { shopId: "$_id" },
                 pipeline: [
                     { $match: productMatch },
-                    {
-                        $project: {
-                            shopId: 0,
-                            createdAt: 0,
-                            updatedAt: 0,
-                            isDeleted: 0,
-                            __v: 0,
-                        },
-                    },
+                    { $project: { name: 1, price: 1, imageUrl: 1 } },
                 ],
-                as: 'product',
+                as: "product",
             },
         },
-        { $unwind: '$product' },
-    ]
+        { $unwind: "$product" }
+    ];
 
-    // Apply cursor filter (must come after $unwind)
-    if (isPaging) {
-        const cursorExpr = buildCursorExpr(cursor!, dir!, sort)
-
-        if (cursorExpr) {
-            pipeline.push({
-                $match: { $expr: cursorExpr },
-            })
-        }
+    if (cursor) {
+        pipeline.push({ $match: { $expr: buildCursorExpr(cursor, sort, order) } });
     }
 
     pipeline.push(
-        {
-            $addFields: {
-                distanceKm: {
-                    $round: [{ $divide: ['$distance', 1000] }, 2]
-                },
-            },
-        },
+        { $addFields: { distanceKm: { $round: [{ $divide: ["$distance", 1000] }, 2] } } },
         {
             $project: {
                 _id: 0,
@@ -172,21 +114,13 @@ export function buildProductDiscoveryPipeline(
                 distance: 1,
                 distanceKm: 1,
                 shop: {
-                    name: '$shopName',
-                    phone: '$phone',
-                    address: '$address',
-                    city: '$city',
-                    state: '$state',
-                    zipcode: '$zipcode',
-                    location: '$location',
-                    imageUrl: '$imageUrl',
-                    isActive: '$isActive',
+                    name: "$shopName",
                 },
             },
         },
-        { $sort: buildSort },
+        { $sort: sortConfig as any },
         { $limit: limit + 1 }
-    )
+    );
 
-    return pipeline
+    return pipeline;
 }

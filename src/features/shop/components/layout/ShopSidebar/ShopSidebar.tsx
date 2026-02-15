@@ -34,7 +34,7 @@ export default function ShopSidebar() {
         },
         {
             name: 'Manage Products',
-            slug: "/shop/manage-products?cursor=&limit=10&dir=next",
+            slug: "/shop/manage-products?sort=newest",
             icon: Warehouse,
             active: true
         },

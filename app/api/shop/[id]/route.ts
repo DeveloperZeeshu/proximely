@@ -1,9 +1,9 @@
 import logger from "core/logger";
-import { UpdateShopErrorType, updateShopService } from "@/features/shop/service";
 import { AuthPayload, requireAuth } from "@/lib/auth/requireAuth";
 import { updateShopSchema } from "@/validations/shop/update.schema";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
+import { UpdateShopErrorType, updateShopService } from "@/features/shop/services/update.shop.service";
 
 const UPDATE_SHOP_ERROR_MAP: Record<UpdateShopErrorType, {
     message: string

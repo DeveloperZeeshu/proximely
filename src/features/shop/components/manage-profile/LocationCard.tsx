@@ -28,6 +28,7 @@ type PropType = {
 
 export function LocationCard({ shopId, initialLocation }: PropType) {
   const [toEdit, setToEdit] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
 
@@ -55,6 +56,7 @@ export function LocationCard({ shopId, initialLocation }: PropType) {
   // Save updated location
   const handleSave = async () => {
     if (!shopId) return
+    setLoading(true)
     try {
       const result = await updateShop({
         shopId,
@@ -72,6 +74,8 @@ export function LocationCard({ shopId, initialLocation }: PropType) {
       setToEdit(false)
     } catch (err: unknown) {
       handleAxiosError(err)
+    } finally{
+      setLoading(false)
     }
   }
 
@@ -145,6 +149,7 @@ export function LocationCard({ shopId, initialLocation }: PropType) {
             <Button
               type="button"
               text='Save'
+              disabled={loading}
               onClick={handleSave}
             />
           </div>

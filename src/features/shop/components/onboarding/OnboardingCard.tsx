@@ -5,7 +5,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { handleAxiosError } from "@/apis/utils/handleAxiosError"
 import { CreateShopInput, createShopSchema } from "../../schemas/create.schema"
-import { Button } from "@/components/ui/button"
+import { Button, LoadingButton } from "@/components/ui/button"
 import { createShop } from "@/apis/shop.api"
 import { useAppDispatch } from "@/hooks/redux-hooks"
 import { editShop } from "@/store/shop/shopSlice"
@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation"
 import { setShopStatus } from "@/store/auth/authSlice"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { SHOP_CATEGORIES } from "@/lib/constants"
+import { useState } from "react"
 
 export function OnboardingCard() {
     const {
@@ -24,10 +25,13 @@ export function OnboardingCard() {
         resolver: zodResolver(createShopSchema)
     })
 
+    const [loading, setLoading] = useState<boolean>(false)
+
     const dispatch = useAppDispatch()
     const router = useRouter()
 
     const submit: SubmitHandler<CreateShopInput> = async (data) => {
+        setLoading(true)
         try {
             const result = await createShop(data)
             dispatch(editShop(result.createdShop))
@@ -37,6 +41,8 @@ export function OnboardingCard() {
             router.push('shop-profile')
         } catch (err: unknown) {
             handleAxiosError(err)
+        } finally{
+            setLoading(false)
         }
     }
 
@@ -100,11 +106,15 @@ export function OnboardingCard() {
                         )}
                     />
                 </div>
-                <Button
-                    type="submit"
-                    className="mt-3"
-                    text="Submit"
-                />
+                {
+                    loading ?
+                        <LoadingButton /> :
+                        <Button
+                            type="submit"
+                            className="mt-3"
+                            text="Submit"
+                        />
+                }
             </div>
 
         </form>

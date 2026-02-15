@@ -1,10 +1,10 @@
 import logger from "core/logger";
 import { VerifyEmailTemplate } from "@/components/email/templates/VerifyEmailTemplate";
 import conf from "@/conf/conf";
-import { SendVerifyEmailErrorType, sendVerifyEmailService } from "@/features/auth/service";
 import { AuthPayload, requireAuth } from "@/lib/auth/requireAuth";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { SendVerifyEmailErrorType, sendVerifyEmailService } from "@/features/auth/services/send_email_verification.service";
 
 const SEND_VERIFY_EMAIL_MAP: Record<SendVerifyEmailErrorType, {
     status: number

@@ -1,4 +1,4 @@
-import { ProductStatErrorType, productStatService } from "@/features/products/service"
+import { ProductStatErrorType, productStatService } from "@/features/products/services/products_stats.service"
 import { AuthPayload, requireAuth } from "@/lib/auth/requireAuth"
 import logger from "core/logger"
 import { NextRequest, NextResponse } from "next/server"

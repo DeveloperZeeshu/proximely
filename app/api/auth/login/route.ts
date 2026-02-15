@@ -1,6 +1,6 @@
 import { ACCESS_TOKEN_EXPIRY_MS, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY_MS } from "@/conf/constants";
 import { cookieConfig } from "@/conf/cookieConfig";
-import { LoginErrorType, loginService } from "@/features/auth/service";
+import { LoginErrorType, loginService } from "@/features/auth/services/login.service";
 import { loginSchema } from "@/validations/auth/login.schema";
 import logger from "core/logger";
 import { cookies } from "next/headers";

@@ -29,6 +29,7 @@ type PropType = {
 
 export function AddressCard({ shopAddress = {}, shopId }: PropType) {
   const [toEdit, setToEdit] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
 
@@ -69,6 +70,7 @@ export function AddressCard({ shopAddress = {}, shopId }: PropType) {
 
   const submit: SubmitHandler<UpdateShopInput> = async (data) => {
     if (!shopId) return
+    setLoading(true)
     try {
       const result = await updateShop({
         shopId,
@@ -82,6 +84,8 @@ export function AddressCard({ shopAddress = {}, shopId }: PropType) {
       setToEdit(false)
     } catch (err: unknown) {
       handleAxiosError(err)
+    } finally{
+      setLoading(false)
     }
   }
 
@@ -202,6 +206,7 @@ export function AddressCard({ shopAddress = {}, shopId }: PropType) {
       {toEdit && (
         <Actions
           toggleEdit={cancelEdit}
+          loading={loading}
         />
       )}
     </form>
