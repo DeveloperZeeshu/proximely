@@ -16,7 +16,7 @@ const RATE_LIMITED_ROUTES = [
     '/api/auth/google',
     '/api/auth/verify-email',
     '/api/auth/verify-email/resend',
-    '/api/products/search'
+    '/api/products'
 ]
 
 // Per-route custom limits
@@ -26,7 +26,7 @@ const ROUTE_LIMITS: Record<string, number> = {
     '/api/auth/google': 5,
     '/api/auth/verify-email': 5,
     '/api/auth/verify-email/resend': 3,
-    '/api/products/search': 10
+    '/api/products': 10
 }
 
 export async function proxy(request: NextRequest) {
@@ -34,7 +34,11 @@ export async function proxy(request: NextRequest) {
         const { pathname } = request.nextUrl
         const ip = (request.headers.get('x-forwarded-for') || '127.0.0.1').split(',')[0].trim()
 
-        if (RATE_LIMITED_ROUTES.includes(pathname)) {
+        const matchedRoute = RATE_LIMITED_ROUTES.find(route =>
+            pathname === route || pathname.startsWith(route + '/')
+        )
+
+        if (matchedRoute) {
             const limit = ROUTE_LIMITS[pathname] || 5
             const limiter = rateLimit(limit)
             const result = await limiter.limit(ip)

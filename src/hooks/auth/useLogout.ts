@@ -17,13 +17,13 @@ export const useLogout = () => {
         setLoading(true)
         try {
             await logoutUser()
+
+            toast.success('Log Out Successfully')
+            router.push('/auth/login')
+            
             dispatch(clearAuth())
             dispatch(clearProducts())
             dispatch(clearShop())
-
-            toast.success('Log Out Successfully')
-
-            router.push('/auth/login')
         } catch (err: unknown) {
             handleAxiosError(err)
         } finally {
