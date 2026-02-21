@@ -1,4 +1,5 @@
 import { REFRESH_TOKEN_EXPIRY_MS } from "@/conf/constants"
+import { connectToDB } from "@/db/dbConnector"
 import { createAccessToken, createRefreshToken, hashToken } from "@/lib/tokens/hash.token"
 import Session from "@/models/session.model"
 import User from "@/models/user.model"
@@ -52,6 +53,8 @@ export const handleGoogleLoginService = async ({
         }
 
         const { email, sub: googleId } = payload
+
+        await connectToDB()
 
         const existingUser = await User.findOne({ email })
 
