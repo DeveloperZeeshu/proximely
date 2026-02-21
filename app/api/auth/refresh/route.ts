@@ -14,6 +14,9 @@ export const POST = async (req: NextRequest) => {
         const result = await refreshTokensService(token)
 
         if (!result.ok) {
+            cookieStore.delete('refresh_token')
+            cookieStore.delete('access_token')
+
             return NextResponse.json({
                 success: false,
                 message: 'Unauthorized.'
@@ -37,7 +40,10 @@ export const POST = async (req: NextRequest) => {
         }, { status: 200 })
 
     } catch (err: unknown) {
-        logger.error('Refresh Error:',  err )
+        logger.error('Refresh Error:', err)
+
+        cookieStore.delete('refresh_token')
+        cookieStore.delete('access_token')
 
         return NextResponse.json({
             success: false,
